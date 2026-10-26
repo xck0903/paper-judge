@@ -1,0 +1,19 @@
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# 本地私人配置（不要把个人路径、个人方向提交上去）
+local-config.md
+*.local.md
+
+# 个人精读笔记（本技能产出的 md 默认落在你自己的笔记目录，不入库）
+notes/
+paper-notes/
+
+# 临时文件
+*.tmp
+*.bak
+~$*
