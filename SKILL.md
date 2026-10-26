@@ -2,7 +2,7 @@
 name: paper-judge
 description: Critical reading of scientific papers (including supporting information) that ends in a verdict, not a summary. It explains what the paper did, then interrogates it with a reviewer's attitude: venue reputation and author group, an evidence ladder applied to the causal chain, per-figure and per-panel grading, a survey of the techniques used, a named list of holes, and a final reliability tier plus a multi-dimensional score. Use this skill whenever the user hands over a paper PDF or supporting information and asks to read, dissect, judge, or evaluate it — including "read this paper", "is this reliable", "can I cite this", "go figure by figure", "reviewer's perspective"; 触发词：读文献、读这篇 paper、这篇靠不靠谱、能不能引、帮我看这篇文章、逐图分析、审稿人视角、精读.
 agent_created: true
-version: 1.2.0
+version: 1.3.0
 license: MIT
 ---
 
@@ -19,7 +19,7 @@ Fill once. Values may also be supplied by the user or kept in the agent's memory
 | Item | Example | Purpose |
 |---|---|---|
 | Field background | e.g. electron microscopy (in situ / cryo, tomography) × electrocatalysis | Baseline for judging whether the user is familiar with a technique; change this line when the field changes |
-| Notes directory | e.g. `~/paper-notes/` | Where the reading note is saved |
+| Notes directory | `F:\文献资料\读文献` | Where reading notes are saved. One folder per paper, named `<Journal>_<Year>_<Title>`; the user drops the PDF, SI and other documents into that same folder afterwards |
 | Default emphasis | blank = full close read, balanced output | See section 1 |
 
 ## 0. Stance
@@ -219,9 +219,12 @@ Rough alignment, not a hard rule — when in conflict the weakest dimension wins
 
 ### Saving
 
-- Directory: the notes directory from Configuration (default `~/paper-notes/`)
-- Filename: `<first-author surname><year>_<journal abbreviation>_<three keywords>.md`
-  e.g. `Zhang2026_NatCatal_CoOx-in-situ-STEM.md` — spaces and special characters become hyphens
+- **One folder per paper**, inside the notes directory from Configuration (default `F:\文献资料\读文献`).
+- Folder name: `<Journal>_<Year>_<Title>`
+  e.g. `NatureCatalysis_2026_CoOx-in-situ-STEM`
+  Journal = the name people actually say (Nature Catalysis → `NatureCatalysis`, JACS → `JACS`, Angew → `Angew`). Year = publication year, four digits. Title = first 3–6 meaningful words of the title, articles dropped, spaces and punctuation become hyphens, Windows-forbidden characters `\ / : * ? " < > |` removed. Keep a Chinese title in Chinese.
+- The note file goes inside as `判读笔记.md` (use `reading-note.md` when the session language is English).
+- **Do not touch anything else in that folder.** The user drops the PDF, the SI and their own documents in afterwards; never move, rename, overwrite or clean them up.
 - Content: **the 12-question summary from `references/reading-template.md` first**, then the four parts in full, the final tier, the score table and the date
 - Conclusions added during discussion must be merged in; do not save only the first version
 
@@ -229,7 +232,17 @@ Rough alignment, not a hard rule — when in conflict the weakest dimension wins
 
 There is no chapter that forces a link to the user's own project. But when a technique or characterization matters to the user's direction — new methods, in situ or operando work, key instrumentation — mark it and say a little more: what is new, whether it can be used, what the barrier to entry is.
 
-## 6. Reference files (load on demand, never all at once)
+## 6. Diagrams (only when a picture explains more than a paragraph)
+
+When a mechanism, a device stack, a data-processing chain or a geometric comparison is genuinely easier to grasp as a picture, **draw one** and put it beside the note.
+
+- **What qualifies**: (a) the paper's proposed mechanism or reaction pathway; (b) the experimental setup — cell, electrode stack, instrument geometry; (c) the processing pipeline, raw data → correction → result, especially where one step is easy to get wrong; (d) a before/after comparison whose point is geometric; (e) the argument's own skeleton — which claim rests on which figure, and where the chain is thin.
+- **What does not**: re-drawing a published figure (no added value, and a copyright problem for anything shared), decoration, or a picture that only restates one paragraph.
+- **Where**: `figures/` inside the paper folder. SVG by default so it stays editable and sharp; PNG only when the medium forces it (bitmap evidence, screenshots).
+- **Label it every time**: `[my schematic — drawn for comprehension, not from the paper]`. Not red tape: the hard rule below says a schematic is not evidence, and a diagram you drew must never be read as the authors' data or as your own measurement.
+- **Never block on it.** A short paper may need none. If drawing costs more than it explains, skip it and say why.
+
+## 7. Reference files (load on demand, never all at once)
 
 | File | When to open |
 |---|---|
@@ -239,7 +252,7 @@ There is no chapter that forces a link to the user's own project. But when a tec
 
 **Read the first two before starting Part 2 and Part 4.** Without them the criteria degrade into impressions.
 
-## 7. Hard rules
+## 8. Hard rules
 
 - **No fabrication**: numbers not in the figure, conditions not stated in the text → write "not reported"; author details not found → "not verified".
 - **Anchor everything**: every judgment carries figure, panel and page (Fig. 3c / p.5 / SI Fig. S12). **No anchor, no claim.**
@@ -249,7 +262,7 @@ There is no chapter that forces a link to the user's own project. But when a tec
 - **Terminology**: use the field's own terms directly; use analogies only for cross-field vocabulary.
 - **Discipline-agnostic**: reject "that is how it is done in this field" as an argument — convention is not evidence. Demand a criterion.
 
-## 8. Output language
+## 9. Output language
 
 **Write in the language the user writes in.** A Chinese question gets a Chinese answer; an English question gets an English answer. If the user mixes languages, follow the dominant one or ask once.
 
@@ -257,6 +270,6 @@ There is no chapter that forces a link to the user's own project. But when a tec
 - Keep this file and everything under `references/` in English as the single source of truth. Do not maintain a parallel translated copy of the instructions: two copies of a rule set drift, and a drifting rule set is two different skills.
 - The reading note is saved in the output language of that session, unless the user says otherwise.
 
-## 9. Tone
+## 10. Tone
 
 Direct. Say when something is weak. But a flaw must come with evidence and a fix — "run this experiment next". Mock the paper, never the person. **Critique is not blanket dismissal** — good is good, say where; bad is bad, say which link.

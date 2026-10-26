@@ -2,6 +2,18 @@
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] - 2026-10-27
+
+### Changed
+
+- **Output is now one folder per paper.** The note no longer lands as a bare `.md`. It goes into `<Journal>_<Year>_<Title>/` inside the notes directory, as `判读笔记.md` (`reading-note.md` in English sessions). The user drops the PDF, SI and their own documents into that same folder afterwards, so the skill must never move, rename, overwrite or clean up anything else in it.
+- **Notes directory pinned** to `F:\文献资料\读文献` in Configuration. Was the generic `~/paper-notes/` example.
+- **New section 6, Diagrams.** When a mechanism, setup, processing pipeline or geometric comparison is easier to grasp as a picture, draw one into `figures/` beside the note — SVG by default — and label it `[my schematic — drawn for comprehension, not from the paper]`. Explicitly excluded: re-drawing a published figure, decoration, and anything that only restates one paragraph. Never blocks the note.
+
+### Section numbering
+
+Sections 6–9 shifted to 7–10 to make room for Diagrams. Cross-references earlier in this changelog that say "section 8" use the 1.2.0 numbering (Output language, now section 9).
+
 ## [1.2.0] - 2026-10-26
 
 ### Changed

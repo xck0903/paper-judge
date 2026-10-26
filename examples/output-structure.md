@@ -118,7 +118,7 @@ After one or two rounds of discussion, give the six scores (1–5 each, 30 total
 | Chain closure | █/5 | ████ |
 | Advance | █/5 | ████ |
 
-Then save (default `~/paper-notes/`), with the 12-question summary at the top:
+Then save to `F:\文献资料\读文献\<Journal>_<Year>_<Title>\判读笔记.md` — one folder per paper, see Saving in `SKILL.md` — with the 12-question summary at the top:
 
 ```
 01 | Scientific question: ████
