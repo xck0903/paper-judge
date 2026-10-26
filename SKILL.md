@@ -1,254 +1,262 @@
 ---
 name: paper-judge
-description: 批判性精读科学文献（含支持信息 SI）并给出裁决——先讲清文章干了什么，再以同行质疑与审稿人视角介绍期刊与课题组、按证据阶梯拆解证据链、逐图逐 panel 评级、盘点技术手段、点名漏洞，最后给出结论可靠性分级与多维度打分。This skill should be used when the user hands over a scientific paper PDF or supporting information and asks to read, dissect, judge, or review it — 触发词包括"读文献"、"读这篇 paper"、"帮我看这篇文章"、"这篇靠不靠谱"、"能不能引"、"逐图分析"、"审稿人视角"、"精读"、"看这篇 PDF"。
+description: Critical reading of scientific papers (including supporting information) that ends in a verdict, not a summary. It explains what the paper did, then interrogates it with a reviewer's attitude: venue reputation and author group, an evidence ladder applied to the causal chain, per-figure and per-panel grading, a survey of the techniques used, a named list of holes, and a final reliability tier plus a multi-dimensional score. Use this skill whenever the user hands over a paper PDF or supporting information and asks to read, dissect, judge, or evaluate it — including "read this paper", "is this reliable", "can I cite this", "go figure by figure", "reviewer's perspective"; 触发词：读文献、读这篇 paper、这篇靠不靠谱、能不能引、帮我看这篇文章、逐图分析、审稿人视角、精读.
 agent_created: true
-version: 1.1.0
+version: 1.2.0
 license: MIT
 ---
 
-# Paper Judge · 批判性阅读与裁决
+# Paper Judge · Critical Reading & Verdict
 
-> 名字里的 judge 是承诺：读完必须给出说法，不能只做摘要。先讲清它干了什么，再判它站不站得住。
+> "Judge" in the name is a commitment: a reading must end in a verdict, not a summary. Explain what the paper did first, then decide whether it holds up.
 
-本流程与学科无关：证据阶梯、三层刻度、panel 分类、统计陷阱、竞争解释构造，对实验科学普遍成立。具体测量陷阱按**测量范式**对号入座，不按学科分（见 `references/evidence-ladder.md` 第三节）。
+The workflow is discipline-agnostic. The evidence ladder, the three scales, panel classification, statistical traps and competing-explanation construction apply to experimental science generally. Concrete measurement pitfalls are matched by **measurement paradigm**, not by field (see `references/evidence-ladder.md`, section 3).
 
-## 配置（首次使用填一次）
+## Configuration
 
-| 项 | 填什么 | 说明 |
+Fill once. Values may also be supplied by the user or kept in the agent's memory instead of editing this file — keeping this file generic is what makes it shareable.
+
+| Item | Example | Purpose |
 |---|---|---|
-| 领域背景 | 例：电子显微学（原位 / 冷冻电镜、三维重构）× 电催化 | 判"熟不熟"的基准；换方向改这一行 |
-| 笔记目录 | 例：`~/paper-notes/` | 精读 md 落盘位置 |
-| 默认偏重 | 留空 = 精读全文、均衡输出 | 见第 1 节 |
+| Field background | e.g. electron microscopy (in situ / cryo, tomography) × electrocatalysis | Baseline for judging whether the user is familiar with a technique; change this line when the field changes |
+| Notes directory | e.g. `~/paper-notes/` | Where the reading note is saved |
+| Default emphasis | blank = full close read, balanced output | See section 1 |
 
-两种填法：① 直接改上表；② **不改本文件**，把偏好记在会话或代理的记忆里——本文件保持通用，便于分享、协作与开源。
+## 0. Stance
 
-## 0. 读法总纲（大前提，先立住）
+**Critical reading does not mean fault-finding from the first line to the last.** The stance is that of a peer challenging a claim, or a referee reviewing a manuscript:
 
-**"批判性阅读"不等于从头到尾挑刺。** 立场是同行质疑 / 审稿人审稿的态度：
+- **Acknowledge the value first**: what was learned, which technique is genuine craft, how far the field was pushed.
+- **But do not take the conclusions on trust**: check whether the evidence suffices and whether alternative explanations were excluded.
+- **Sound chain plus sufficient evidence → say so plainly.** Do not manufacture flaws in order to look rigorous.
+- **Flaw found → challenge and downgrade**, stating which link weakened and by how much.
 
-- **先承认它创造的价值**：学到了什么、哪个手段是硬功夫、把领域往前推了哪一步。
-- **但不全信**：它给的结论和结果要考证——证据够不够、有没有未排除的替代解释。
-- **逻辑链通畅 + 证据充分 → 给高评价**，明确说"这篇撑得住"，别为了显得严格而硬找毛病。
-- **发现漏洞 → 质疑并降级**，说清降在哪一环、降多少。
+Three ground rules:
 
-三条底线原则：
+> Respect technical innovation, but never let technical difficulty substitute for scientific proof.
+> Respect statistical significance, but never let a p-value substitute for independent replication.
+> Respect mechanistic models, but never write correlation as causation.
 
-> 尊重技术创新，但不让技术难度替代科学证明；
-> 尊重统计显著性，但不让 p 值替代独立重复；
-> 尊重机制模型，但不把相关性写成因果性。
+### Three scales (do not mix)
 
-### 三层刻度（别混用）
-
-| 对象 | 用什么刻度 | 在哪定义 |
+| Object | Scale | Defined in |
 |---|---|---|
-| 单条结论 | **四层**：已充分支持 / 有支持但需限定 / 合理假说 / 证据不足 | `references/reading-template.md` |
-| 单张图、单个证据 | **强/中/弱** + 站在证据阶梯第几级 | `references/evidence-ladder.md` |
-| 整篇 | **四档可靠性**（下表） | 本文件 |
+| A single claim | **Four levels**: well supported / supported with caveats / plausible hypothesis / insufficient | `references/reading-template.md` |
+| A single figure or piece of evidence | **Strong / moderate / weak** plus its rung on the evidence ladder | `references/evidence-ladder.md` |
+| The whole paper | **Four reliability tiers** (below) | this file |
 
-### 整篇结论可靠性（四档）
+### Whole-paper reliability (four tiers)
 
-按**结论可靠性**分，不按字母排。每档给判据，别凭感觉。
+Grade by **reliability of the conclusion**, not by letter grade. Each tier has criteria; do not grade on impression.
 
-| 档 | 判据 | 能不能用 |
+| Tier | Criteria | Usable? |
 |---|---|---|
-| **一档 · 实证扎实** | 结论清晰；证据完善；表征选得对、参数交代清楚、多手段互相印证；数据与统计严谨；证据链闭合 | 结论可直接引用 |
-| **二档 · 基本成立，有缺口** | 结论清晰；证据总体完整；但链条有漏、部分表征缺失，或某一环只靠单一手段 | 引用时必须附限定条件（"在 X 条件下"） |
-| **三档 · 半信（约 50%）** | 给了明确结论，也确有强力证据支撑其中一部分；但逻辑存在较大漏洞，某些数据分析手段与结果解读不合理 | 只能当线索，不能当依据 |
-| **四档 · 不成立** | 关键证据不足；证据与结论之间明显不衔接，撑不住它自己的说法 | 不可引用 |
+| **Tier 1 · Well substantiated** | Clear conclusion; complete evidence; appropriate techniques with parameters disclosed and mutually corroborating; rigorous data and statistics; closed causal chain | Citable as stated |
+| **Tier 2 · Basically sound, with gaps** | Clear conclusion; broadly complete evidence; but the chain has holes, some characterization is missing, or one link rests on a single technique | Citable only with an explicit qualifier ("under condition X") |
+| **Tier 3 · Half-believable (~50%)** | A definite conclusion, and part of it is backed by strong evidence; but the logic has major holes and some data analysis or interpretation is unreasonable | A lead, not a basis |
+| **Tier 4 · Does not hold** | Key evidence missing; evidence and conclusion do not connect; the claim cannot stand on what was shown | Not citable |
 
-**篇级档位由最关键那条结论决定，不由平均分决定。** Part 1 给初判，Part 4 末尾更新，变了必须明写"从二档降到三档，因为……"。
+**The paper's tier is set by its weakest critical claim, not by the average.** Give a provisional tier in Part 1 and update it at the end of Part 4. If it changes, write it out: "downgraded from Tier 2 to Tier 3 because …".
 
-## 1. 开读前：定偏重（30 秒）
+## 1. Before reading: pick an emphasis (30 seconds)
 
-### 大前提（永远生效，不可跳过）
+### The premise (always in force)
 
-**不管什么目的，第一件事都是把这篇读懂、读会**——四部分照出，逻辑链画清楚，证据和结论对上。**偏重只决定哪一部分往深里挖，不决定跳过哪部分。**
+**Whatever the purpose, the first job is to actually understand the paper** — all four parts are produced, the logic chain is drawn, evidence is matched against conclusions. **Emphasis decides where to dig deeper; it never decides what to skip.**
 
-没提目的 → 按默认走：精读全文，均衡输出，不加专项。
+No emphasis stated → full close read, balanced output, no add-on section.
 
-### 五种偏重（问一句，或使用者自己说）
+### Five emphases
 
-| 偏重 | 往哪儿挖 | 输出怎么倾斜 |
+| Emphasis | Where to dig | How the output tilts |
 |---|---|---|
-| **① 学实验方法** | 实验操作、合成思路、材料制备路线、条件窗口、表征手段怎么搭配 | Part 1.3 的"方法与体系选择"扩写；Part 2 重点在实验条件与参数；**末尾加一节「可迁移的方法」**：哪一步是通用的、换体系要改什么、哪一步是他有我没有的 |
-| **② 学数据分析与逻辑推理** | 它怎么把数据变成结论：单个数据怎么解读、不同证据怎么串成推理链、哪一步是硬跳过去的 | Part 1.3 的"逻辑链"扩写；Part 2 重点在"数据→结论"这一步；Part 4 重点在推理断点；**末尾加一节「它的推理招式」**：可复用的分析套路 + 哪一步我不认 |
-| **③ 学写作与组图** | 叙事结构：Figure 顺序为什么这么排、文字和图怎么咬合、证据摆在哪、怎么绕开短板 | Part 2 重点在"这张图为什么排这个位置"；**末尾加一节「可借用的写法」**：图的排列逻辑 / claim 措辞 / 短板处理 / 摘要怎么开场 |
-| **④ 引它** | 它在领域里的位置和意义 | 大幅压缩：只给意义几句 + 可引用原句 + 限定条件；Part 2、Part 3 先问一句"还要不要逐图"。**但评级和结论边界必须给**——引用是要担责的，边界省了就会引错 |
-| **⑤ 质疑它** | 漏洞、替代解释、统计与代表性 | Part 4 变成主战场（扩写）；Part 2 重点在"这张图到底能不能支撑它那句话"；每条核心结论强制两种竞争解释；**末尾加一节「最该补的对照实验」**：按性价比排 |
+| **① Learning the experimental method** | Protocol, synthesis logic, material route, condition window, how characterization techniques were combined | Expand "methods and system choice" in Part 1.3; Part 2 focuses on conditions and parameters; **add a closing section "Transferable methods"**: which step is general, what must change in another system, which step needs equipment the user does not have |
+| **② Learning data analysis and reasoning** | How data became conclusions: how a single dataset was interpreted, how separate pieces of evidence were chained, where the chain jumped | Expand the logic chain in Part 1.3; Part 2 focuses on the data→claim step; Part 4 focuses on reasoning breaks; **add "Its reasoning moves"**: reusable analysis patterns plus the step you reject |
+| **③ Learning writing and figure design** | Narrative: why figures are ordered this way, how text and figures interlock, where evidence is placed, how weaknesses are routed around | Part 2 focuses on "why this figure sits here"; **add "Borrowable writing"**: figure order logic, claim wording strength, weakness handling, how the abstract opens |
+| **④ Citing it** | Its position and significance in the field | Compress heavily: a few lines on significance, citable sentences with their qualifiers; ask before Part 2 or 3 whether figure-by-figure is wanted. **The tier and the boundary of the conclusion must still be given** — citing transfers responsibility, and dropping the boundary is how misquotes happen |
+| **⑤ Challenging it** | Holes, alternative explanations, statistics and representativeness | Part 4 becomes the main event (expanded); Part 2 focuses on "can this figure actually support that sentence"; two competing explanations are mandatory per core claim; **add "The control experiments most worth adding"**, ranked by cost-effectiveness |
 
-**⑤ 不是新目的，是把底色调重。** 批判本来就是全程底色，⑤ 只是把火力集中到 Part 4。
+**⑤ is not a new purpose; it turns up the volume on the baseline.** Critique is always present; ⑤ simply concentrates the fire on Part 4.
 
-### 倾斜规则（防止跑偏）
+### Tilt rules (to prevent drift)
 
-1. 偏重**只改"哪里讲更细 + 末尾追加一节"**，不改四部分的骨架与顺序。
-2. 任何偏重下，**逻辑链、最脆一环、评级、漏洞总账都不能省**——这些是骨架，不是可选项。
-3. 专项小节统一放在 Part 4 之后、讨论之前，只出一节，不许多加。
+1. Emphasis changes **only where to go deeper and which single section is appended** — never the four-part skeleton or its order.
+2. Under any emphasis, **the logic chain, the weakest link, the tier and the full hole list are never optional.**
+3. The emphasis section always goes after Part 4 and before discussion, exactly one section.
 
-顺带确认：主文/SI 齐不齐（缺 SI 就说"以下结论只基于主文"）；图多提醒切多模态模型（否则图会瞎编）。
+Also confirm two things: is the SI present (if not, state "the following is based on the main text only")? And if figures are numerous, switch to a multimodal model — otherwise figures get hallucinated.
 
-## 2. 提取
+## 2. Extraction
 
-- 主文全文提取；**图必须导出成图片文件逐张看**；表格单独提取，不靠文字流猜数字。
-- 记录期刊、年份、通讯作者、单位（Part 1 要用）。
-- **SI 通扫，不精读**：扫目录、图题、表题建索引，然后只精读三类：
-  1. 直接支撑主文核心观点的数据
-  2. 涉及使用者关心的手段或表征（他所在方向的新方法、原位/工况表征、关键技术）
-  3. **专找打脸的三处**：换条件就不行的实验、本该有信号却没有的谱学、作者自己承认的限制
-  其余只记一句"SI 另有 X 类补充数据，未细看"。第 3 类常比主文任何一张图都值钱。
+- Extract the full main text; **figures must be exported as image files and viewed one by one**; extract tables separately and never infer numbers from prose.
+- Record journal, year, corresponding authors and affiliations (needed for Part 1).
+- **Scan the SI; do not close-read it.** Index the contents, figure captions and table captions, then close-read only three kinds:
+  1. Data that directly supports a core claim of the main text
+  2. Work involving techniques the user cares about (new methods in their field, in situ or operando characterization, key instrumentation)
+  3. **Anything that contradicts the paper**: experiments that fail when conditions change, spectra that should show a signal but do not, limitations the authors admit
 
-## 3. 输出：四部分，分轮交付
+  Everything else gets one line: "the SI contains additional data of type X, not examined closely." Category 3 is often worth more than any figure in the main text.
 
-### Part 1 · 出身、团队，与这篇文章干了什么（约 30%，合计 1100–1400 字）
+## 3. Output: four parts, delivered in stages
 
-#### 1.1 发在哪、这个刊什么风评（开头，120–180 字）
+### Part 1 · Venue, group, and what the paper did (~30%; about 700–900 words in English, 1100–1400 characters in Chinese)
 
-- **刊名 + 大致档位**：影响因子与分区标【检索】；拿不准就写"未核实"，不许凭印象报数。
-- **风评一句话**，按三类判：
-  - **老牌口碑刊**：审稿严、返修周期长、领域内公认、文章被同行长期引用
-  - **高分新刊 / 顶刊子刊**：影响因子高、审稿相对快，门槛仍在
-  - **高分但门槛松**：发文量大、OA 版面费高、审稿快、自引互引多、领域内引用习惯一般
-- **判断依据要摆出来**：审稿严格度 / 领域内引用习惯 / 发文量与 OA 收费 / 撤稿与争议记录。别只丢一句"这个刊一般"，那是没信息量。
-- **红线：期刊风评只作背景，不许用刊名推断这篇文章的好坏。** 高分刊有水文，低分刊有硬活。文章行不行看 1.3 到 Part 4，不看封面。
+#### 1.1 Where it was published, and what the venue is worth (opening, ~90–120 words)
 
-#### 1.2 领域与团队（300–400 字，一段话）
+- **Venue plus rough standing**: impact factor and quartile marked [verified]; if unsure write "not verified" — never report a number from memory.
+- **One-line reputation**, judged in three categories:
+  - **Established and well regarded**: strict review, long revision cycles, recognised in the field, cited by peers over years
+  - **High-impact new journal or prestige sub-journal**: high impact factor, relatively fast review, threshold still real
+  - **High impact factor, loose threshold**: large volume, expensive open access, fast review, heavy self- and mutual citation, weak citation habits in the field
+- **Show the basis**: review strictness, citation habits in the field, volume and open-access fees, retraction and dispute record. "It is a so-so journal" with nothing behind it carries no information.
+- **Red line: venue reputation is background only; never infer paper quality from the journal name.** High-impact venues publish filler; low-impact venues publish solid work. Whether the paper holds up is decided from 1.3 through Part 4, not on the cover.
 
-- **领域现状一句话**：这个方向现在在争什么、卡在哪，这篇从哪个口子进来。
-- **第一作者**：一句带过——通常是博士生，说明是谁的学生、现单位即可，不铺开。
-- **第一通讯 + 第二通讯**（只提前两位最知名、最关键的，其余不写）：单位、课题组方向、代表性工作、在该方向的地位。
-- **课题组水平要可核对**，不许写"国际知名学者"这类空心话。判断依据：代表作与发表记录、该方向是否有标志性成果、组规模与产出节奏、与本文方法/体系的连续性。
-- **必须核实，禁止编造**：作者信息以论文首页与致谢为准；课题组水平需检索公开信息，标【检索】；检索不到就写"未核实"，不许补头衔、奖项、师承。
+#### 1.2 Field and group (~200–260 words, one paragraph)
 
-#### 1.3 这篇文章干了什么（800–900 字）
+- **The field in one sentence**: what the subfield is arguing about now, where it is stuck, which opening this paper enters through.
+- **First author**: one line — usually a PhD student; whose student, current affiliation. Do not expand.
+- **First and second corresponding authors only** — the two most prominent and most relevant; omit the rest. Give affiliation, group direction, representative work, standing in that direction.
+- **Group standing must be checkable**; no hollow phrases such as "internationally renowned scholar". Basis: representative publications, landmark results in that direction, group size and output cadence, continuity with the methods and system used here.
+- **Verify, never invent**: author details from the paper's front page and acknowledgements; group standing requires a public search, marked [verified]; if nothing is found write "not verified" — never add titles, awards or academic lineage.
 
-**用讲的，别用条目堆。** 目标：让用户看完就明白这篇文章干了什么、值不值得信。按这条链讲：
+#### 1.3 What the paper did (~500–600 words)
 
-`研究缺口 → 可检验假设 → 为什么选这个体系 → 逐图各提供哪一环证据 → 测量怎么变成指标 → 指标怎么连到性能/机理 → 哪些是直接观测、哪些是模型推断 → 竞争解释排除了吗 → 统计与代表性站得住吗 → 结论边界在哪`
+**Tell it as prose, not as a bullet dump.** Goal: after reading this the user knows what was done and whether it is believable. Follow this chain:
 
-落成六段：
+`gap → testable hypothesis → why this system → what each figure contributes → how a measurement becomes a metric → how the metric links to performance or mechanism → what is directly observed versus modelled → are competing explanations excluded → do statistics and representativeness hold → where the boundary of the conclusion lies`
 
-1. **一句话结论 + 初判档位**——先给判断，别铺垫。
-2. **研究缺口与假设**——要解决什么、前人卡在哪（是理论空白、观测能力不足，还是缺因果验证）；把作者的主张改写成可检验句式："若机制 X 成立，则指标 A、B 应随条件 C 出现特定变化"。
-3. **方法与体系选择**——用了什么手段、什么样品、为什么非用它不可、实验怎么铺开。
-4. **科学性（只给判断，不展开证据）**——证据链闭不闭合、薄在哪一环，一句话说完。**证据与推理全部留到 Part 4。**
-5. **进步性**——推进了哪一步，标【增量型】还是【突破型】；禁止"性能优异""创新性强"，一律换成"比谁高多少、排除了什么"。
-6. **逻辑链 + 最脆的一环**——把上面那条链画成一行，标出断点（只点名，不展开）。
+Six paragraphs:
 
-**Part 1 末尾必问一句**："要不要逐图解析？"并列出图号清单（Fig. 1–6 / SI Fig. S1–S20），让用户挑——可只挑几张，不必全上。
+1. **One-sentence conclusion plus provisional tier** — judgment first, no throat-clearing.
+2. **Gap and hypothesis** — what needs solving, where predecessors got stuck (theoretical blank, observational limit, or missing causal test); rewrite the authors' claim as a testable statement: "if mechanism X holds, metrics A and B should vary in a specific way with condition C."
+3. **Methods and system choice** — which techniques, which samples, why nothing else would do, how the experiments were laid out.
+4. **Scientific soundness (judgment only, no evidence)** — is the chain closed, which link is thin, in one sentence. **All evidence and reasoning belongs in Part 4.**
+5. **Advance** — what step forward, marked [incremental] or [breakthrough]; ban "excellent performance" and "highly innovative" — replace with "higher than whom, by how much, and what was excluded".
+6. **Logic chain plus weakest link** — the chain above as one line, with the break marked (name it, do not expand).
 
-### Part 2 · 逐图解析（约 50%，触发式）
+**Part 1 must end with a question**: "Do you want figure-by-figure analysis?" plus the figure inventory (Fig. 1–6 / SI Fig. S1–S20) so the user can pick a subset.
 
-用户点名后才做。每张图 200–300 字：
+### Part 2 · Figure by figure (≈50%, on request)
+
+Only after the user asks. About 120–180 words per figure:
 
 ```
-Fig. X（图题）
-- 手段与条件：什么仪器、什么模式、什么气氛/温度/剂量
-- panel 拆解：a/b/c 各归哪一类 —— 原始观测 / 处理后数据 / 统计汇总 / 模拟输出 / 示意图
-- 数据与误差：关键数字、趋势、对比关系、n 是多少、误差棒是什么含义
-- 作者声称它证明了什么：
-- 证据阶梯：站在第 __ 级（1 信号 / 2 预处理 / 3 定量重构 / 4 统计 / 5 机理 / 6 因果）
-  有没有跨级跳？比如从统计直接说机理、从重构坐标说成实拍轨迹
-- 我的判断：强 / 中 / 弱 + 一句理由
-- 问题在哪：锚点（Fig. 3c / p.5）→ 什么问题 → 怎么查、怎么补
+Fig. X (caption)
+- Technique and conditions: instrument, mode, atmosphere / temperature / dose
+- Panel breakdown: a/b/c classified as raw observation / processed data / statistical summary / simulation output / schematic
+- Data and error: key numbers, trend, comparison, n, what the error bars mean
+- What the authors claim it proves:
+- Evidence ladder rung: level __ (1 signal / 2 preprocessing / 3 quantification and reconstruction / 4 statistics / 5 mechanism / 6 causation)
+  Any leap between rungs? e.g. statistics used to assert mechanism, or reconstructed coordinates described as filmed trajectories
+- My judgment: strong / moderate / weak, plus one-line reason
+- Where the problem is: anchor (Fig. 3c / p.5) → what problem → how to check, how to fix
 ```
 
-**读图顺序固定**：图注 → 实验条件 → 数值与误差 → 作者的解读 → 还有哪些解释同样符合这批数据。**先看证据，再看作者怎么说**，防被解释带跑。
+**Fixed reading order**: caption → experimental conditions → numbers and errors → the authors' interpretation → what else fits the same data. **Evidence before narrative**, so the interpretation cannot lead you.
 
-**逐图全部写完后，必须补一段「图间独立性」**：这几张图是否共用同一批数据、同一个样品、同一个假设？后一张是否拿前一张的结论当前提？号称"多手段互证"的，测的是不是同一个物理量？
+**After all figures, a mandatory section on independence between figures**: do these figures share the same dataset, the same sample, the same assumption? Does a later figure take an earlier conclusion as a premise? Where "multiple techniques corroborate" is claimed, are they measuring the same physical quantity?
 
-图多不合并、不跳。SI 图单独一节，只讲第 2 步挑出来的那些。
+Never merge figures to save space, never skip. SI figures go in a separate section, limited to those selected in step 2.
 
-**若用户不要逐图解析**：跳过 Part 2，Part 1 扩到约 50%，Part 3、Part 4 各自展开更细。
+**If figure-by-figure is declined**: skip Part 2, expand Part 1 to about 50%, and give Parts 3 and 4 more room.
 
-### Part 3 · 技术手段盘点（约 8%，300–500 字）
+### Part 3 · Survey of techniques (≈8%, ~200–330 words)
 
-**横向汇总，不重复 Part 2。** 一张表 + 三句话：
+**A horizontal summary that does not repeat Part 2.** One table plus three sentences:
 
-| 手段 | 用来解决什么 | 常规/创新 | 你熟不熟 | 强在哪（可核对） |
+| Technique | What it solves | Routine / novel | User familiar? | Strength (checkable) |
 |---|---|---|---|---|
 
-- **熟悉度按顶部「配置」里的领域背景判**；没填就先问一句，别瞎猜。标【推断】，使用者纠正以他为准。
-- 不熟的手段给一句大白话解释，多给一层"这相当于……"的比方。
-- **"强/有创新"必须给可核对表述**：比常规做法多解决了什么、排除了什么、分辨率/时间尺度/原位条件提升多少。禁止空心评价。
-- 分清**用成熟工具做新组合**与**真的造了新仪器/新算法**——前者是组合创新，别抬成方法学突破。
-- 挑出 1–2 个"这篇最硬的功夫"单独点明。
+- **Familiarity is judged from the field background in Configuration**; if unset, ask once — do not guess. Mark [inferred]; the user's correction wins.
+- For unfamiliar techniques give a plain-language explanation plus one "this is roughly like …" analogy.
+- **"Strong" or "novel" must be checkable**: what it solves beyond the routine approach, what it excludes, how much resolution, time scale or operando capability improved. No hollow praise.
+- Distinguish **a new combination of mature tools** from **genuinely new instrumentation or algorithms** — the former is combinatorial novelty; do not inflate it into a methodological breakthrough.
+- Name one or two "hardest craft in this paper" explicitly.
 
-### Part 4 · 漏洞与逻辑可疑点（约 8%，每条 100–200 字）
+### Part 4 · Holes and suspect logic (≈8%, ~65–130 words each)
 
-先给总账（几条致命、几条存疑、几条吹毛求疵），再逐条。五类来源：
+Start with the tally (how many fatal, how many doubtful, how many nitpicks), then go one by one. Five sources:
 
-1. 数据支撑不了的结论（overclaim，尤其"首次"用得不实）
-2. 缺的对照实验、缺的表征
-3. 图里看着挺好但有问题的处理 / 归一化 / 统计（含 n 值、误差棒、百分点与百分比混淆）
-4. SI 里与主文结论对不上的细节
-5. 对竞争解释的排除不充分
+1. Conclusions the data cannot support (overclaim, especially misuse of "first")
+2. Missing controls, missing characterization
+3. Processing, normalization or statistics that look fine but are not (n, error bars, percentage points versus percent)
+4. SI details inconsistent with the main text
+5. Insufficient exclusion of competing explanations
 
-**每条核心结论，必须由你自己造出至少两种竞争解释，并写清"什么实验能让它们给出不同预测"。** 不许只问"作者排除了吗"，那是被动检查；要主动构造。作者若只补了更多同类漂亮图，等于没排除。
+**For every core claim, construct at least two competing explanations yourself and state what experiment would make them predict differently.** Do not merely ask "did the authors exclude it" — that is passive checking. If the authors only added more good-looking figures of the same kind, nothing was excluded.
 
-每条格式：**锚点（Fig. 3c / p.5）→ 问题 → 为什么是问题 → 严重度（致命/存疑/吹毛求疵）→ 怎么补**
+Each item: **anchor (Fig. 3c / p.5) → problem → why it is a problem → severity (fatal / doubtful / nitpick) → how to fix**.
 
-末尾**更新可靠性档位**，并给出**条级四层**归属：哪几条结论算"已充分支持"、哪几条只能"有支持但需限定"、哪几条只是"合理假说"、哪几条"证据不足"。
+End by **updating the reliability tier** and assigning the **four claim-level verdicts**: which conclusions are well supported, which are supported with caveats, which are plausible hypotheses, which are insufficient.
 
-### 偏重专项（仅当第 1 节选了 ①–⑤ 才出）
+### Emphasis add-on (only if ①–⑤ was chosen)
 
-放在 Part 4 之后、进入讨论之前，**只出一节**，标题用第 1 节表里给的名字（可迁移的方法 / 它的推理招式 / 可借用的写法 / 最该补的对照实验）。400 字以内，只写能直接拿去用的东西，不写"值得借鉴"这类空话。
+After Part 4 and before discussion, **exactly one section**, titled as in section 1 (Transferable methods / Its reasoning moves / Borrowable writing / The control experiments most worth adding). Under ~250 words. Only what can be used directly; no "worth learning from".
 
-## 4. 读完之后：讨论 → 打分 → 落盘
+## 4. After reading: discussion → scoring → save
 
-四部分出完后**不许直接收尾**，按这个顺序走：
+**Do not wrap up right after the four parts.** Follow this order:
 
-1. **问一句**："这篇你还有哪些想追问的、或者需要我解释的？"
-2. **多轮讨论**：按用户的问题答。讨论中若涉及新证据，回原文核对并带锚点；**不许为了圆场改口**，原判错了就明说"我上一条判错了，因为……"。
-3. 讨论一到两轮后，**再问一次**"还有问题吗"。
-4. 用户说没有了 → **提醒他给这篇文章做多维度打分**，并把下表连同我方初评一起给出（分数由他改，最终以他的为准）。
+1. **Ask**: "What else do you want to push on, or want me to explain?"
+2. **Multi-round discussion**: answer what is asked. If new evidence comes up, return to the source and cite the anchor; **never change a judgment to smooth things over** — if an earlier call was wrong, say so: "my previous point was wrong because …".
+3. After one or two rounds, **ask again**: "Anything else?"
+4. When the user says no → **remind them to score the paper**, and present the table below with your own provisional scores. The user edits them; theirs wins.
 
-### 多维度打分表（每项 1–5 分，满分 30）
+### Multi-dimensional score (1–5 each, 30 total)
 
-| 维度 | 看什么 | 我方初评 | 理由（一句） |
+| Dimension | What it looks at | Provisional | Reason (one line) |
 |---|---|---|---|
-| 结论清晰度 | 能不能一句话说清它证明了什么 | /5 | |
-| 证据完整度 | 关键结论的支撑数据、对照、n 值齐不齐 | /5 | |
-| 表征可靠性 | 手段是否适配问题、参数是否交代、有无独立手段互证 | /5 | |
-| 数据分析严谨性 | 统计、误差棒、归一化、图像处理是否站得住 | /5 | |
-| 逻辑链闭合度 | 假设→设计→实验→证据→结论有无断点 | /5 | |
-| 推进价值 | 相对领域现状推进了哪一步 | /5 | |
+| Clarity of conclusion | Can it state what was proven in one sentence | /5 | |
+| Evidence completeness | Key claims backed by data, controls, n | /5 | |
+| Characterization reliability | Techniques fit the question, parameters disclosed, independent corroboration | /5 | |
+| Analytical rigor | Statistics, error bars, normalization, image processing hold up | /5 | |
+| Chain closure | Any break from hypothesis → design → experiment → evidence → conclusion | /5 | |
+| Advance | How far beyond the current state of the field | /5 | |
 
-参考对齐（不是硬规则，冲突时以短板为准）：26–30 一档；20–25 二档；14–19 三档；≤13 四档。
+Rough alignment, not a hard rule — when in conflict the weakest dimension wins: 26–30 Tier 1; 20–25 Tier 2; 14–19 Tier 3; 13 or below Tier 4.
 
-5. **打分结束后才落盘**。
+5. **Save only after scoring.**
 
-### 落盘
+### Saving
 
-- 目录：顶部「配置」里的笔记目录（默认 `F:\文献资料\读文献\`）
-- 命名：`<第一作者姓><年份>_<期刊简称>_<主题三词>.md`
-  例：`Zhang2026_NatCatal_CoOx-in-situ-STEM.md`（空格与特殊字符一律换成连字符）
-- 内容：**先放 `references/reading-template.md` 的 12 问速记表**，再接四部分全文 + 最终档位 + 打分表 + 落盘日期
-- 讨论中新增的结论也要并进去，不要只写初始版本
+- Directory: the notes directory from Configuration (default `~/paper-notes/`)
+- Filename: `<first-author surname><year>_<journal abbreviation>_<three keywords>.md`
+  e.g. `Zhang2026_NatCatal_CoOx-in-situ-STEM.md` — spaces and special characters become hyphens
+- Content: **the 12-question summary from `references/reading-template.md` first**, then the four parts in full, the final tier, the score table and the date
+- Conclusions added during discussion must be merged in; do not save only the first version
 
-## 5. 旁注规则（不做固定章节）
+## 5. Side notes (not a standing section)
 
-不做"与使用者课题强挂钩"的章节。但若遇到**他所在方向关心的手段或表征**（新方法、原位/工况表征、关键技术），单独标出来多讲几句：新在哪、能不能为我所用、上手门槛是什么。
+There is no chapter that forces a link to the user's own project. But when a technique or characterization matters to the user's direction — new methods, in situ or operando work, key instrumentation — mark it and say a little more: what is new, whether it can be used, what the barrier to entry is.
 
-## 6. 参考文件（按需加载，别一上来全读）
+## 6. Reference files (load on demand, never all at once)
 
-| 文件 | 什么时候翻 |
+| File | When to open |
 |---|---|
-| `references/evidence-ladder.md` | 判证据强弱时、要查测量陷阱与统计陷阱时、评估计算的角色时 |
-| `references/critique-checklist.md` | Part 4 之前逐组过 A–D 提问；拆"首次"；查图间独立性；SI 找打脸 |
-| `references/reading-template.md` | 落盘前填 12 问速记表；查条级四层定义 |
+| `references/evidence-ladder.md` | When grading evidence strength, checking measurement or statistical traps, or assessing the role of computation |
+| `references/critique-checklist.md` | Before Part 4, to walk groups A–D; to dissect "first"; to check inter-figure independence; to hunt contradictions in the SI |
+| `references/reading-template.md` | Before saving, to fill the 12-question summary; to look up the four claim-level verdicts |
 
-**Part 2 和 Part 4 开始之前，先读前两个文件。** 不读就写，判据会退化成感觉。
+**Read the first two before starting Part 2 and Part 4.** Without them the criteria degrade into impressions.
 
-## 7. 硬规矩
+## 7. Hard rules
 
-- **不编造**：图里没有的数字、文献没写的条件，一律写"原文未给出"；作者信息查不到就写"未核实"。
-- **锚点必带**：每条判断给图号 + 小图 + 页码（Fig. 3c / p.5 / SI Fig. S12）。**没锚点的判断不许写。**
-- **三层标注**：原文声称 / 我的推断 / 待验证，每层标清楚。（与"三类证据"不同：一个问谁说的，一个问证据性质，两个都标）
-- **示意图不是证据**：关键结论只有示意图和模拟撑着、没有原始观测，直接判这一环最脆。
-- **没有独立 n，不许说"统计显著"**；**"未显著"不等于"等效"**；**百分点不是百分比**。
-- **术语**：使用者所在领域的术语直接用；跨领域的词才打比方。
-- **学科无关**：任何"这个领域都这么做"的话术不接受，必须给判据——惯例不是证据。
-- **中文输出**。
+- **No fabrication**: numbers not in the figure, conditions not stated in the text → write "not reported"; author details not found → "not verified".
+- **Anchor everything**: every judgment carries figure, panel and page (Fig. 3c / p.5 / SI Fig. S12). **No anchor, no claim.**
+- **Three-layer labelling**: as claimed by the authors / my inference / to be verified. Distinct from the three evidence types — one asks who said it, the other asks what kind of evidence it is. Label both.
+- **A schematic is not evidence**: if a key claim rests only on schematics and simulation, with no raw observation, that link is the weakest by definition.
+- **No independent n, no "statistically significant"**; **"not significant" is not "equivalent"**; **percentage points are not percent**.
+- **Terminology**: use the field's own terms directly; use analogies only for cross-field vocabulary.
+- **Discipline-agnostic**: reject "that is how it is done in this field" as an argument — convention is not evidence. Demand a criterion.
 
-## 8. 语气
+## 8. Output language
 
-直言不讳，该损就损，但漏洞判断必须附证据和"怎么补这个实验"。可以嘲讽文章，不做无证据的人身攻击。**批判不等于全盘否定**——好就是好，要说清好在哪；烂就是烂，要说清烂在哪一环。
+**Write in the language the user writes in.** A Chinese question gets a Chinese answer; an English question gets an English answer. If the user mixes languages, follow the dominant one or ask once.
+
+- Keep technical terms, instrument names and figure labels in their original form. Do not translate a technique name into a local-language paraphrase the user cannot search for later.
+- Keep this file and everything under `references/` in English as the single source of truth. Do not maintain a parallel translated copy of the instructions: two copies of a rule set drift, and a drifting rule set is two different skills.
+- The reading note is saved in the output language of that session, unless the user says otherwise.
+
+## 9. Tone
+
+Direct. Say when something is weak. But a flaw must come with evidence and a fix — "run this experiment next". Mock the paper, never the person. **Critique is not blanket dismissal** — good is good, say where; bad is bad, say which link.

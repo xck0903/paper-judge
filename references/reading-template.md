@@ -1,34 +1,38 @@
-# 精读速记模板（落盘时填，讨论中随时补）
+# Close-Reading Summary Template (fill when saving; extend during discussion)
 
-读完四部分、讨论完、打完分，落盘 md 时用这张表做摘要页，放在文件最前面。**空着的地方写"原文未给出"，不许猜。**
+Once the four parts are done, the discussion is over and the score is set, use this as the summary page of the saved note, placed at the very top. **Where something is unknown, write "not reported" — never guess.**
 
 ```
-01｜科学问题：作者真正想回答的是 ______。
-02｜旧认知与缺口：过去知道 ______，但无法证明 ______（缺口类型：理论空白 / 观测能力不足 / 缺因果验证）。
-03｜可检验假设：如果 ______ 成立，就应当看到 ______。
-04｜创新归属：问题 ______；材料体系 ______；实验设计 ______；仪器算法 ______；证据 ______；理论 ______
-    （"首次"属于：首次展示 / 首次定量 / 首次直接证明 —— 三选一，不许含糊）
-05｜逐图证据：Fig.__ 测得 ______；数据处理 ______；声称支持 ______；站在证据阶梯第 __ 级
-06｜隐含假设：从信号到结论，中间依赖 ______ 假设（哪些没被验证）
-07｜样本与统计：独立 n = ____（颗粒级/批次级/原子级）；对照 ______；不确定度 ______
-08｜因果缺口：从 ______ 到 ______ 之间还缺 ______
-09｜竞争解释：解释 A ______；解释 B ______；能区分二者的实验 ______
-10｜结论分层：
-    已充分支持 ______
-    有支持但需限定 ______
-    合理假说 ______
-    证据不足或不成立 ______
-11｜可借鉴：方法 ______；实验设计 ______；科研表达/组图逻辑 ______
-12｜最终判断：整篇可靠性 __ 档（一档实证扎实 / 二档基本成立有缺口 / 三档半信 / 四档不成立）
+01 | Scientific question: what the authors really wanted to answer is ______.
+02 | Prior knowledge and gap: it was known that ______, but it could not be proven that ______
+     (gap type: theoretical blank / observational limit / missing causal test).
+03 | Testable hypothesis: if ______ holds, then ______ should be observed.
+04 | Attribution of novelty: question ______; material system ______; experimental design ______;
+     instrumentation or algorithm ______; evidence ______; theory ______
+     ("first" is: first demonstration / first quantification / first direct proof — pick one, no vagueness)
+05 | Per-figure evidence: Fig.__ measured ______; processing ______; claimed to support ______;
+     stands on ladder level __
+06 | Implicit assumptions: from signal to conclusion, the chain relies on ______ (list what was never verified)
+07 | Sample and statistics: independent n = ____ (particle / batch / atom level); controls ______;
+     uncertainty ______
+08 | Causal gap: between ______ and ______ what is still missing is ______
+09 | Competing explanations: A ______; B ______; experiment that discriminates them ______
+10 | Claim-level verdicts:
+     well supported ______
+     supported with caveats ______
+     plausible hypothesis ______
+     insufficient or does not hold ______
+11 | Worth borrowing: method ______; experimental design ______; scientific writing or figure logic ______
+12 | Final judgment: paper tier __ (1 well substantiated / 2 basically sound with gaps / 3 half-believable / 4 does not hold)
 ```
 
-## 四层结论的定义（条级，与篇级四档分开用）
+## The four claim-level verdicts (per claim; separate from the paper tier)
 
-| 层级 | 判据 |
+| Level | Criteria |
 |---|---|
-| **已充分支持** | 直接数据可靠；重复与对照充分；推断幅度小 |
-| **有支持但需限定** | 有关联或干预证据，但仍依赖假设，或样本偏少；引用时要写出限定条件 |
-| **合理假说** | 能解释现象，但未排除其他机制，缺关键中间证据 |
-| **证据不足或不成立** | 统计矛盾；模型不唯一；无法复现；推断明显越界 |
+| **Well supported** | Direct data reliable; repeats and controls sufficient; the inferential step is small |
+| **Supported with caveats** | Association or intervention evidence exists, but it still rests on assumptions or on a small sample; state the caveat when citing |
+| **Plausible hypothesis** | Explains the phenomenon, but other mechanisms are not excluded and a key intermediate piece of evidence is missing |
+| **Insufficient or does not hold** | Statistical contradiction; non-unique model; not reproducible; the inference clearly overreaches |
 
-**条级给四层，篇级给四档。** 一篇里可以同时有"已充分支持"的一条和"证据不足"的一条；整篇的档位由**最关键那条结论**决定，不由平均水平决定。
+**Verdicts are per claim; tiers are per paper.** One paper can contain a "well supported" claim and an "insufficient" claim at the same time. The paper's tier is set by **its most critical weak claim**, not by the average.

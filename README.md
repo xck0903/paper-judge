@@ -1,208 +1,205 @@
-# Paper Judge · 批判性阅读与裁决
+# Paper Judge · Critical Reading & Verdict
 
-> `paper-judge` — 一个给 AI 代理用的**科研论文精读与裁决技能**：以审稿人的态度读文献——先承认它创造的价值，但不照单全收它的结论。
+> `paper-judge` — an agent skill for **close reading of scientific papers that ends in a verdict**. It reads with a referee's attitude: acknowledge what the work contributes, but do not take its conclusions on trust.
 
-阅读只是手段，**判决才是产出**。所以它不叫 review（读一遍），叫 judge（读完要给说法）。
+**English** · [中文](README.zh-CN.md)
 
-不是"帮我总结这篇论文"，是"帮我把这篇论文拆开、验证、然后判断能不能引用"。
+Reading is the means. **The verdict is the product.** That is why it is called *judge* and not *review* — review describes reading it once; judge means you have to say where it stands.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Discipline agnostic](https://img.shields.io/badge/scope-discipline--agnostic-blue)
+![Pure markdown](https://img.shields.io/badge/dependencies-none-lightgrey)
 
 ---
 
-## 它解决什么问题
+## The problem it solves
 
-让 AI 读文献，最常见的失败是这三种：
+Ask an AI to read a paper and three failures recur:
 
-| 失败模式 | 表现 |
+| Failure | What it looks like |
 |---|---|
-| **复述摘要** | 把 abstract 换种说法重写一遍，读完你并不知道它到底撑不撑得住 |
-| **客气** | 通篇"该研究具有重要意义""方法设计合理"，一句可核对的话都没有 |
-| **编造** | 图没被真正看过，却报出"约 3.2 nm"这样的数字；原文没写的条件被自动补全 |
+| **Paraphrasing** | The abstract restated in different words. You finish reading and still do not know whether the work holds up |
+| **Politeness** | "This study is of great significance" and "the method design is reasonable" throughout, with not one checkable statement |
+| **Fabrication** | Reporting "about 3.2 nm" for a figure the model never actually looked at; completing experimental conditions the paper never stated |
 
-本技能针对这三种失败设计，每一条硬规矩背后都对应一个具体的翻车姿势。
+Every hard rule in this skill exists to block one of these. The rules are not stylistic preferences — they are countermeasures with a specific failure attached.
 
 ---
 
-## 核心设计：三把尺子，各管一层
+## Core design: three scales, each on its own layer
 
-同一个"好/不好"不能通用于三个不同的层级。本技能用三套刻度，互不混用：
+The same word — "good" or "weak" — cannot be used across three different layers. This skill keeps three scales apart:
 
-| 对象 | 刻度 | 用途 |
+| Object | Scale | Question it answers |
 |---|---|---|
-| **单条结论** | 已充分支持 / 有支持但需限定 / 合理假说 / 证据不足 | 这条结论能不能拿去用 |
-| **单张图、单个证据** | 强 / 中 / 弱 + 站在证据阶梯第几级 | 这张图到底证明了什么 |
-| **整篇论文** | 一档实证扎实 / 二档基本成立有缺口 / 三档半信（约 50%）/ 四档不成立 | 这篇能不能引用、怎么引 |
+| **A single claim** | Well supported / supported with caveats / plausible hypothesis / insufficient | Can I use this sentence? |
+| **A single figure or piece of evidence** | Strong / moderate / weak, plus its rung on the evidence ladder | What does this figure actually prove? |
+| **The whole paper** | Tier 1 well substantiated / Tier 2 sound with gaps / Tier 3 half-believable (~50%) / Tier 4 does not hold | Can I cite this, and how? |
 
-**篇级档位由最关键那条结论决定，不由平均分决定。** 一篇里有五条硬结论和一条软结论，档位看那条软的。
+**The paper's tier is set by its most critical weak claim, not by the average.** Five solid conclusions and one soft one: the tier follows the soft one.
 
 ---
 
-## 证据阶梯（本技能的地基）
+## The evidence ladder (the foundation)
 
-判"证据强/中/弱"之前，先知道这条证据站在哪一级、在哪一级被偷换了：
+Before grading evidence, know which rung it stands on and where it was substituted:
 
-| 级 | 在干什么 | 常见偷换 |
+| Level | What happens | Usual substitution |
 |---|---|---|
-| 1 直接信号 | 仪器真正记录下来的东西 | 把处理后的漂亮图当成原始信号 |
-| 2 数据预处理 | 去噪、扣背景、峰拟合、配准、AI 修复 | 预处理引入了周期性或人为衬度，被当作"结构" |
-| 3 定量与重构 | 计数、坐标、相组成、应变分布 | 算法参数不交代；人为设定被当作观测事实 |
-| 4 统计关联 | 比了哪些组、n 是多少、误差多大 | 同一颗粒内数千原子被当作数千次独立实验 |
-| 5 物理化学解释 | 指标为什么对应性能/机理 | 中间环节没测，靠"众所周知"补齐 |
-| 6 因果与普遍性 | 干预、对照、重复、独立表征 | 从"两个量同步变化"跳到"一个导致另一个" |
+| 1 Direct signal | What the instrument actually recorded | A processed pretty image passed off as the raw signal |
+| 2 Preprocessing | Denoising, background subtraction, peak fitting, registration, AI restoration | Processing introduced periodicity or contrast, then read as "structure" |
+| 3 Quantification and reconstruction | Counting, coordinates, phase fractions, strain | Algorithm settings undisclosed; built-in assumptions presented as observation |
+| 4 Statistical association | Which groups, what n, how large the error | Thousands of atoms in one particle treated as thousands of independent experiments |
+| 5 Physical / chemical interpretation | Why a structural metric maps onto performance or mechanism | The intermediate step never measured, filled in from "well known" |
+| 6 Causation and generality | Intervention, controls, repeats, independent characterization | "Two quantities move together" upgraded to "one causes the other" |
 
-两条硬底线：
+Two hard floors:
 
-> 不能从"两个量同步变化"直接推出因果。
-> 不能从"重构/拟合出来的坐标"说成"实拍的运动轨迹"。
+> Never derive causation from two quantities co-varying.
+> Never describe reconstructed or fitted coordinates as a filmed trajectory.
 
 ---
 
-## 怎么用
+## How to use it
 
-**输入**：一篇论文 PDF（最好带支持信息 SI）+ 一句话说明你想拿它做什么。
+**Input**: a paper PDF (with supporting information if available) plus one line about what you want out of it.
 
-**流程**（每个阶段都停下来等你）：
+**Workflow** (the skill stops and waits at each checkpoint):
 
 ```
-开读前定偏重
+Pick an emphasis
   ↓
-Part 1  出身、团队，与这篇文章干了什么（约 30%）
-  ↓   ← 停：问你要不要逐图解析、解哪几张
-Part 2  逐图解析，按 panel 拆、按证据阶梯定位（约 50%）
+Part 1  Venue, group, and what the paper did (~30%)
+  ↓   ← STOP: ask whether to go figure by figure, and which figures
+Part 2  Figure by figure, panels classified, rungs located (~50%)
   ↓
-Part 3  技术手段盘点（横向表：常规/创新、你熟不熟、强在哪）
+Part 3  Survey of techniques (horizontal table: routine/novel, familiar to you, strength)
   ↓
-Part 4  漏洞与逻辑可疑点（每条带锚点 + 严重度 + 怎么补）
+Part 4  Holes and suspect logic (each with anchor + severity + fix)
   ↓
-偏重专项（选了偏重才有）：可迁移的方法 / 它的推理招式 / 可借用的写法 / 最该补的对照实验
-  ↓   ← 停：先问你还有什么想追问的，多轮讨论
-多维度打分（6 维 × 5 分）
+Emphasis add-on (only if one was chosen)
+  ↓   ← STOP: invite questions, discuss over one or two rounds
+Multi-dimensional score (6 dimensions × 5 points)
   ↓
-落盘成 md
+Save as markdown
 ```
 
-**偏重是加权的，不是选择题。** 无论选哪种，四部分照出、逻辑链照画、漏洞总账照给。偏重只决定"哪里讲得更细 + 末尾追加哪一节"。
+**Emphasis is a weight, not a menu.** Whatever you pick, all four parts are produced, the logic chain is drawn and the hole list is complete. Emphasis only decides where the prose gets thicker and which single section is appended.
 
-| 偏重 | 往哪儿挖 |
+| Emphasis | Where it digs |
 |---|---|
-| 默认（没说） | 精读全文，均衡输出 |
-| ① 学实验方法 | 操作、合成思路、条件窗口；末尾给「可迁移的方法」 |
-| ② 学数据分析与逻辑推理 | 数据怎么变成结论、证据怎么串成推理链；末尾给「它的推理招式」 |
-| ③ 学写作与组图 | Figure 顺序、图文咬合、短板怎么绕；末尾给「可借用的写法」 |
-| ④ 引它 | 领域位置 + 可引原句 + 限定条件（评级必须保留，引错要担责） |
-| ⑤ 质疑它 | Part 4 变主战场；末尾给「最该补的对照实验」 |
+| Default (none given) | Full close read, balanced output |
+| ① Experimental method | Protocol, synthesis logic, condition window; appends "Transferable methods" |
+| ② Data analysis and reasoning | How data became claims, how evidence was chained; appends "Its reasoning moves" |
+| ③ Writing and figure design | Figure order, text–figure interlock, how weaknesses are routed around; appends "Borrowable writing" |
+| ④ Citing it | Position in the field, citable sentences, their qualifiers (the tier is still mandatory — citing transfers responsibility) |
+| ⑤ Challenging it | Part 4 becomes the main event; appends "The control experiments most worth adding" |
 
 ---
 
-## 关键判据（摘几条）
+## A few of the criteria
 
-- **示意图不是证据**。关键结论只有示意图和模拟撑着、没有原始观测，这一环直接判最脆。
-- **图与图不一定独立**。六张漂亮的图可能共用同一批数据、同一个样品，那不叫交叉验证，叫复读。
-- **同一颗粒里几千个原子 ≠ 几千次独立实验**。
-- **"未显著"不等于"等效"；"可逆"要分清是轨迹恢复、分布回初始、还是差异不显著。**
-- **百分点不是百分比**。"从 92.3% 降到 91.0%" 是降 1.3 个百分点，不是 13%。
-- **强制构造两种竞争解释**。不许只问"作者排除了吗"，要自己造出来，并写清"什么实验能让它们给出不同预测"。
-- **SI 专找打脸的三处**：换条件就不行的实验、本该有信号却没有的谱学、作者自己承认的限制。
-- **期刊风评只作背景**，不许用刊名推断文章质量。高分刊有水文，低分刊有硬活。
-- **每个判断必须带锚点**（Fig. 3c / p.5 / SI Fig. S12）。没锚点的判断不许写。
+- **A schematic is not evidence.** If a key claim rests only on schematics and simulation, with no raw observation, that link is the weakest by definition.
+- **Figures are not automatically independent.** Six attractive figures can share one dataset and one sample. That is not cross-validation, it is repetition.
+- **Thousands of atoms inside one particle ≠ thousands of independent experiments.**
+- **"Not significant" is not "equivalent";** "reversible" must be split into trajectory recovery, distribution recovery, or a non-significant difference.
+- **Percentage points are not percent.** From 92.3% to 91.0% is 1.3 percentage points, not 13%.
+- **Construct two competing explanations yourself.** Not "did the authors exclude it" — build them, then state what experiment would make them predict differently.
+- **Hunt the SI for contradictions**: the experiment that fails when conditions change, the spectrum with no signal, the limitation the authors admit.
+- **Venue reputation is background only.** Never infer paper quality from the journal name. High-impact venues publish filler; low-impact venues publish solid work.
+- **Every judgment carries an anchor** (Fig. 3c / p.5 / SI Fig. S12). No anchor, no claim.
 
 ---
 
-## 与学科无关
+## Discipline-agnostic by design
 
-本技能不绑定任何领域。做法是：**陷阱清单按"测量范式"分类，不按学科分类**。
+The skill binds to no field. The mechanism: **pitfall checklists are organised by measurement paradigm, not by discipline.**
 
-| 范式 | 典型问题 |
+| Paradigm | Typical questions |
 |---|---|
-| 成像类 | 辐照损伤、漂移、投影效应、采样偏差 |
-| 谱学与衍射类 | 荷电与基线、峰拟合约束、峰重叠、定量因子 |
-| 电化学与性能测试类 | iR 补偿、归一化分母、传质与气泡、稳定性时长 |
-| 力学、热学与器件类 | 接触电阻/热阻、标定与滞后、尺寸效应 |
-| 计算与模拟类 | 收敛测试、采样、模型先验、与实验的关系 |
+| Imaging | Radiation damage, drift, projection effects, sampling bias |
+| Spectroscopy and diffraction | Charging and baselines, fitting constraints, peak overlap, quantification factors |
+| Electrochemistry and performance | iR compensation, normalization denominator, transport and bubbles, stability duration |
+| Mechanics, thermal, devices | Contact resistance or thermal resistance, calibration and hysteresis, size effects |
+| Computation and simulation | Convergence, sampling, model priors, relation to experiment |
 
-用的范式不在表里 → 按同一句式自己补一组："**这个仪器的读数还可能被什么伪造？**"
-
-这才是清单的用法，不是背条目。
+If your paradigm is not listed, write your own group in the same form: **"what else could fake this instrument's reading?"** That is how a checklist is used, not memorised.
 
 ---
 
-## 目录结构
+## Repository layout
 
 ```
 .
-├── SKILL.md                      主文件：流程骨架、三层刻度、硬规矩
+├── SKILL.md                      Workflow skeleton, three scales, hard rules
 ├── references/
-│   ├── evidence-ladder.md        六级证据阶梯、三类证据、测量范式陷阱、统计陷阱
-│   ├── critique-checklist.md     A–D 提问组、"首次"三级分辨、图间独立性、panel 分类
-│   └── reading-template.md       12 问速记模板 + 条级四层定义
+│   ├── evidence-ladder.md        Six-level ladder, three evidence types, paradigm pitfalls, statistical traps
+│   ├── critique-checklist.md     Groups A–H, the three kinds of "first", inter-figure independence, panel classification
+│   └── reading-template.md       12-question summary + the four claim-level verdicts
 ├── examples/
-│   └── output-structure.md       输出骨架示意
+│   └── output-structure.md       Output skeleton
+├── docs/
+│   └── DESIGN.zh-CN.md           Design rationale (Chinese)
+├── README.zh-CN.md               Chinese README
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 └── LICENSE
 ```
 
-`references/` 是按需加载的：主文件不会一次吃掉所有细则，只在判证据、过清单、落盘时分别去翻。
+`references/` is loaded on demand: the main file does not consume every detail at once, it opens the relevant appendix when grading evidence, walking the checklist, or saving a note.
 
 ---
 
-## 安装
-
-把整个目录放进你的代理读取 skills 的位置，例如：
+## Install
 
 ```bash
 git clone https://github.com/xck0903/paper-judge.git
 cp -r paper-judge ~/.your-agent/skills/
 ```
 
-也可以直接下载仓库 zip 解压到 skills 目录。
+Or download the repository zip and unpack it into your skills directory.
 
-不同代理的目录不同（WorkBuddy / Claude Code / Codex / 其他读 markdown 指令的代理）。本技能是纯 markdown，不依赖任何专有 API——**只要能读文件并按指令执行，就能用**。
+Directory layouts differ between agents (WorkBuddy / Claude Code / Codex / anything that reads markdown instructions). The skill is pure markdown with no proprietary API dependency — **if the agent can read files and follow instructions, it works.**
 
-首次使用填一下 `SKILL.md` 顶部的「配置」三行（领域背景、笔记目录、默认偏重）。也可以不改文件，把偏好记在代理的记忆里。
-
----
-
-## 输出长什么样
-
-见 [`examples/output-structure.md`](examples/output-structure.md)。一句话概括：
-
-> 先给你四部分完整拆解（含每张图站在证据阶梯第几级），再陪你讨论，最后打 6 个维度的分、落成一份带锚点的 md。
-
-所有判断都带 `Fig. Xc / p.N / SI Fig. SN` 这样的锚点，方便你回原文核对——**这是本技能的底线：不许写你核对不了的话。**
+Fill in the three lines under "Configuration" in `SKILL.md` once (field background, notes directory, default emphasis). You can also leave the file untouched and keep the preferences in the agent's memory.
 
 ---
 
-## 适合谁
+## What the output looks like
 
-- 需要快速判断一篇论文值不值得跟进的研究生、博后
-- 要引用某篇工作、但怕引错边界的写作者
-- 想学高水平论文怎么讲故事的作者
-- 要给组会/答辩做文献汇报的人
-- 任何需要在"尊重技术创新"和"不被技术难度唬住"之间找平衡的读者
+See [`examples/output-structure.md`](examples/output-structure.md). In one sentence:
 
-## 不适合谁
+> A full four-part dissection (each figure located on the evidence ladder), then a discussion with you, then six scores and a saved markdown note where every judgment carries an anchor.
 
-- 想要一篇通顺中文摘要的人（那不是本技能的目标）
-- 想要 AI 替他读、不打算回原文核对的人——**本技能的价值建立在你会去核对锚点上**
+Every judgment carries an anchor like `Fig. Xc / p.N / SI Fig. SN` so you can check it against the source. **That is the floor of this skill: never write a sentence the user cannot verify.**
 
 ---
 
-## 设计来源与致谢
+## Who it is for
 
-- 核心判据来自作者本人的科研实践（电子显微学与电催化交叉方向）。
-- 六级证据阶梯、三类证据、逐 panel 分类、竞争解释构造等思路，参考了科研同行中流传的批判性阅读逻辑链与同行评议实践，未直接复制任何特定来源文本。
-- 欢迎补充你自己领域的测量范式与失败案例。
+- Graduate students and postdocs deciding whether a paper is worth following up
+- Writers who need to cite something without misquoting its boundary
+- Authors studying how high-level papers build a story
+- Anyone presenting a paper at a group meeting or a defence
+- Anyone who needs to balance respect for technical innovation against not being impressed by difficulty alone
 
-## 免责声明
+## Who it is not for
 
-本技能是**阅读辅助工具**，不替代同行评议，也不替代你自己的判断。AI 会产生错误，包括锚点错误、期刊信息错误、作者信息错误。**任何影响你实验或投稿的决定，都必须回原文核对。**
+- Anyone who wants a fluent summary — that is not the goal here
+- Anyone who wants the AI to do the reading so they never open the paper — **the value of this skill rests on you checking the anchors**
 
-## 许可
+---
+
+## Design origin and acknowledgements
+
+- The core criteria come from the author's own research practice in electron microscopy and electrocatalysis.
+- The six-level evidence ladder, the three evidence types, per-panel classification and competing-explanation construction draw on critical-reading logic chains and peer-review practice circulating in the research community. No specific source text was copied.
+- Contributions of additional measurement paradigms and failure cases are welcome.
+
+## Disclaimer
+
+This skill is a **reading aid**. It does not replace peer review, and it does not replace your own judgment. AI models make mistakes, including wrong anchors, wrong venue details and wrong author details. **Any decision affecting your experiments or your submission must be checked against the source.**
+
+## License
 
 [MIT](LICENSE)
-
----
-
-English summary: *A discipline-agnostic AI skill for critical reading of scientific papers. It reads with a reviewer's attitude — values the contribution, but verifies every claim. Three separate scales (per-claim, per-figure, per-paper), a six-level evidence ladder, measurement-paradigm-based pitfall checklists, mandatory alternative-explanation construction, and anchor-cited judgments. Plain markdown, works with any agent that can read files.*

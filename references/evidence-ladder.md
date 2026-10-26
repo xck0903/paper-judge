@@ -1,90 +1,91 @@
-# 证据阶梯与陷阱清单
+# Evidence Ladder and Pitfall Checklists
 
-判"证据强/中/弱"之前，先知道这条证据站在哪一级、在哪一级被偷换了。**逐图判断时先定位层级，再查这一级的常见偷换。**
+Before grading evidence strong / moderate / weak, locate the rung it stands on and where it was substituted. **When judging a figure, locate the level first, then check the usual substitution at that level.**
 
-## 一、六级证据阶梯
+## 1. The six-level evidence ladder
 
-| 级 | 这一级在干什么 | 要问什么 | 常见偷换 |
+| Level | What happens here | What to ask | Usual substitution |
 |---|---|---|---|
-| **1 直接信号** | 仪器真正记录下来的东西：散射强度、质谱信号、电流、谱峰、图像投影 | 原始记录是什么？校准过吗？能重复吗？ | 把处理后的漂亮图当成原始信号 |
-| **2 数据预处理** | 去噪、背景扣除、峰拟合、配准、AI 修复/超分 | 每一步怎么改信号？会不会凭空造出结构？（尤其 CNN 去噪、AI 补全） | 预处理引入了周期性或人为衬度，被当作"结构" |
-| **3 定量与重构** | 原子计数、配位数、三维坐标、相组成、应变分布 | 依赖什么几何先验、物理模型、算法参数？参数换个值结论变不变？ | 算法参数不交代；重构结果的"人为设定"被当作"观测事实" |
-| **4 统计关联** | 比较了哪些组？n 是多少？独立重复几次？误差多大？ | 独立单位是颗粒、批次、还是原子？误差棒是 SD 还是 SEM？ | 同一颗粒内数千原子被当作数千次独立实验 |
-| **5 物理化学解释** | 结构指标为什么对应吸附、电子态、势垒、失活 | 中间那一环真的测到了吗，还是"众所周知"？ | 中间环节未测，靠文献常识补齐 |
-| **6 因果与普遍性** | 有没有控制变量干预、对照、重复、独立表征 | 能不能排除其他机制？换个体系还成立吗？ | 从"两个量同步变化"跳到"一个导致另一个" |
+| **1 Direct signal** | What the instrument actually recorded: scattering intensity, mass spectrum, current, spectral peak, image projection | What is the raw record? Was it calibrated? Can it be reproduced? | A processed, good-looking image presented as the raw signal |
+| **2 Preprocessing** | Denoising, background subtraction, peak fitting, registration, AI restoration / super-resolution | How does each step alter the signal? Could it manufacture structure out of nothing (especially CNN denoising and AI inpainting)? | Periodicity or artificial contrast introduced by processing, then read as "structure" |
+| **3 Quantification and reconstruction** | Atom counting, coordination number, 3D coordinates, phase fractions, strain maps | What geometric prior, physical model or algorithm parameter does it depend on? Does the conclusion survive a change of parameter? | Algorithm parameters undisclosed; the reconstruction's built-in assumptions presented as observed fact |
+| **4 Statistical association** | Which groups were compared? What is n? How many independent repeats? How large is the error? | Is the independent unit a particle, a batch, or an atom? Are the error bars SD or SEM? | Thousands of atoms inside one particle treated as thousands of independent experiments |
+| **5 Physical / chemical interpretation** | Why a structural metric maps onto adsorption, electronic state, barrier height, deactivation | Was the intermediate link actually measured, or is it "well known"? | The intermediate step never measured, filled in from literature common sense |
+| **6 Causation and generality** | Controlled intervention, controls, repeats, independent characterization | Can other mechanisms be excluded? Does it hold in another system? | "Two quantities move together" upgraded to "one causes the other" |
 
-**两条硬底线**
-- 不能从"两个量同步变化"直接推出因果。
-- 不能从"重构/拟合出来的原子坐标"说成"逐原子实拍的运动轨迹"。
+**Two hard floors**
 
-## 二、三类证据必须分清
+- Never derive causation directly from two quantities co-varying.
+- Never describe reconstructed or fitted atomic coordinates as a filmed, atom-by-atom trajectory.
 
-| 类型 | 定义 | 能耐 |
+## 2. Three evidence types, kept distinct
+
+| Type | Definition | Capability |
 |---|---|---|
-| **直接观测** | 仪器直接给出、经合理校准可重现的信号 | 最强，但只覆盖仪器能测的量 |
-| **间接推断** | 由图像强度、拟合、统计或结构模型推得的不可直接观察变量 | 强度取决于模型对不对，必须写清依赖 |
-| **机制解释** | 用相关性、先验理论或计算支持的因果叙述 | 最弱，必须检验"是否唯一解释" |
+| **Direct observation** | Signal the instrument delivers and that reproduces after reasonable calibration | Strongest, but covers only what the instrument measures |
+| **Indirect inference** | A non-observable variable derived from image intensity, fitting, statistics or a structural model | Only as strong as the model; the dependency must be stated |
+| **Mechanistic interpretation** | A causal narrative supported by correlation, prior theory or computation | Weakest; must be tested for uniqueness |
 
-**与"三层标注"的分工**：三层标注（原文声称 / 我的推断 / 待验证）问的是"**这话谁说的**"；三类证据问的是"**这个证据本身是什么性质**"。两个都要标，缺一不可。
+**How this differs from the three-layer labelling**: the three-layer label (as claimed / my inference / to be verified) asks **who is speaking**; the three evidence types ask **what kind of evidence this is**. Label both; neither substitutes for the other.
 
-## 三、测量陷阱清单（按测量范式对号入座）
+## 3. Measurement pitfall checklists (matched by paradigm)
 
-不要按学科找，按**这篇用的测量范式**找。每一类问同一个问题：**仪器看到的是样品，还是仪器自己？**
+Do not look these up by field. Look them up by **the measurement paradigm this paper uses**. Every category answers the same question: **is the instrument seeing the sample, or seeing itself?**
 
-**成像类**（显微、断层、光学、高速摄影）
-- 辐照与照明损伤：剂量多少？有没有未照射对照？
-- 漂移与旋转：怎么校正的？校正本身会不会抹掉真实变化？
-- 像差、离焦、对焦漂移：衬度是结构，还是成像条件？
-- 投影效应：二维投影是三维的积分，薄区与厚区的强度不可直接比
-- 表面污染累积：随时间生长的污染层会伪造"演化"趋势
-- 原位条件的真实性：局域气压、温度、电场真的等于设定值吗？测点受不受样品架、窗口、加热片影响？
-- 辐照诱导的烧结与传质：看到的变化是热力学驱动，还是束流驱动？
-- 采样偏差：对象怎么挑的？是不是只报了最好看的那几个？追踪的是不是"活下来的那批"？
+**Imaging** (microscopy, tomography, optical, high-speed photography)
+- Irradiation or illumination damage: what dose? Is there an unirradiated control?
+- Drift and rotation: how was it corrected? Could the correction itself erase real change?
+- Aberration, defocus, focus drift: is the contrast structure, or an imaging condition?
+- Projection: a 2D projection integrates 3D; intensities in thin and thick regions are not directly comparable
+- Surface contamination build-up: a growing contamination layer can fake an "evolution" trend
+- Authenticity of in situ conditions: is the local pressure, temperature or field really what was set? Is the measurement point affected by the holder, the window, the heater?
+- Beam-induced sintering and mass transport: is the observed change thermodynamic or beam-driven?
+- Sampling bias: how were objects selected? Were only the best-looking ones reported? Were the tracked ones only "the survivors"?
 
-**谱学与衍射类**（XPS / XAS / Raman / IR / NMR / 质谱 / XRD）
-- 荷电与基线：荷电校正怎么做的？基线怎么选的？换基线，峰面积变多少？
-- 峰拟合约束：峰数、峰形、半高宽是测出来的还是设进去的？约束一改结论还在吗？
-- 峰重叠：两个组分的归属能不能互换解释？
-- 定量因子：灵敏度因子、散射截面、探测深度适用于这个样品吗？
-- 采样位置与时间：只测了最有代表性的那个点？束流或激光本身改变了样品？
+**Spectroscopy and diffraction** (XPS / XAS / Raman / IR / NMR / MS / XRD)
+- Charging and baseline: how was charge correction done? How was the baseline chosen? How much does peak area change with a different baseline?
+- Fitting constraints: are peak number, shape and width measured or imposed? Does the conclusion survive a change of constraint?
+- Peak overlap: can the assignments of two components be swapped?
+- Quantification factors: do the sensitivity factors, cross-sections and probe depth apply to this sample?
+- Sampling position and time: only the most representative spot measured? Did the beam or laser itself alter the sample?
 
-**电化学与性能测试类**
-- iR 补偿与参比校准：补偿了多少？参比漂移怎么控？
-- 归一化的分母：几何面积、ECSA、还是负载量？换分母结论变不变？
-- 传质与气泡：测的是本征活性，还是传质上限？
-- 稳定性时长与工况：测了几小时？离真实工况差多远？
-- 对比基准：跟谁比的？那个"最好文献值"是同一条件下测的吗？
+**Electrochemistry and performance testing**
+- iR compensation and reference calibration: how much was compensated? How was reference drift controlled?
+- The denominator in normalization: geometric area, ECSA, or loading? Does the conclusion change with the denominator?
+- Mass transport and bubbles: is this intrinsic activity, or a transport ceiling?
+- Stability duration and duty: how many hours? How far from real operating conditions?
+- Benchmark: compared against whom? Was that "best literature value" measured under the same conditions?
 
-**力学、热学与器件类**
-- 夹具与接触：接触电阻/热阻算进去了吗？界面是不是主导项？
-- 标定与滞后：传感器多久标一次？升降温速率带来多少滞后？
-- 尺寸效应：试样越小，边界效应占比越大
+**Mechanics, thermal, devices**
+- Fixture and contact: are contact resistance or thermal resistance included? Is the interface the dominant term?
+- Calibration and hysteresis: how often is the sensor calibrated? How much lag do ramp rates introduce?
+- Size effects: the smaller the specimen, the larger the boundary contribution
 
-**计算与模拟类**
-- 泛函、力场、截断能、体系尺寸：收敛测试做了吗？
-- 采样与构型：跑了多长、几条独立轨迹、是不是只报了最好看的那条？
-- 模型先验：初始结构、对称性、电荷态是设的还是解的？
-- 与实验的关系：是独立预测，还是从实验反推结构的必要步骤？
+**Computation and simulation**
+- Functional, force field, cutoff, cell size: was a convergence test done?
+- Sampling and configurations: how long, how many independent trajectories, or only the prettiest one reported?
+- Model priors: are the initial structure, symmetry and charge state set or solved for?
+- Relation to experiment: an independent prediction, or a necessary modeling step to get a structure out of the data?
 
-**这篇用的范式不在这五类里** → 按同一句式自己补一组："这个仪器的读数还可能被什么伪造？"**这才是清单的用法，不是背条目。**
+**If the paper's paradigm is not in these five** → write your own group in the same sentence form: "what else could fake this instrument's reading?" **That is how a checklist is used, not memorised.**
 
-## 四、模型敏感性检查（三维重构尤其必查）
+## 4. Model sensitivity (mandatory for any reconstruction)
 
-若模型依赖对称性、原子数守恒、势函数、初始结构、正则化强度等先验，逐一问：**把这些先验换掉，主结论还成立吗？**
+If the model depends on symmetry, atom-count conservation, a potential function, an initial structure or a regularization strength, ask for each: **change this prior, does the main conclusion survive?**
 
-同类检查：多个不同过程能否产生同一个最终统计分布？——**分布变化不等于个体转化**（"低配位减少、高配位增加" ≠ "低配位一个个变成了高配位"）。
+Related check: can several different processes produce the same final statistical distribution? **A distribution shift is not a per-object transition** — "fewer low-coordination sites, more high-coordination sites" is not "low-coordination sites turned into high-coordination sites one by one".
 
-## 五、统计与数值陷阱
+## 5. Statistical and numerical traps
 
-- **百分点 ≠ 百分比**："从 92.3% 降到 91.0%" 是降 1.3 个百分点，不是降 13%。
-- **n 要分层**：颗粒级 / 批次级 / 原子级各不相同。同一颗粒内的原子不独立。
-- **误差棒含义**：SD、SEM、95% CI 是三种东西，写法不能混。
-- **效应量 > p 值**：p 小不代表差别大；样本堆得多，微小差异也显著。
-- **"可逆"三义**：① 原子轨迹恢复原样 ② 整体分布回到初始 ③ 前后差异不显著。**未显著不等于等效**——样本少时尤其不能这么说。
-- **"稳定"要问时长**：测了多久？外推到工况了吗？
+- **Percentage points ≠ percent**: going from 92.3% to 91.0% is a drop of 1.3 percentage points, not 13%.
+- **Stratify n**: particle-level, batch-level and atom-level are different. Atoms within one particle are not independent.
+- **Error bar meaning**: SD, SEM and 95% CI are three different things; never blur them.
+- **Effect size beats p-value**: a small p does not mean a large difference; pile on samples and a trivial shift turns significant.
+- **"Reversible" has three meanings**: (1) atom trajectories return to the original; (2) the overall distribution returns to the initial; (3) the before/after difference is not significant. **Not significant is not equivalent** — especially with a small sample.
+- **"Stable" needs a duration**: for how long was it measured? Was it extrapolated to operating conditions?
 
-## 六、计算的角色
+## 6. The role of computation
 
-- 结构弛豫、电子结构、吸附能、反应能垒是**四件不同的事**，别混。
-- 经典 MD ≠ DFT ≠ 证明反应路径。
-- 分清计算是**独立验证实验**，还是**从实验数据反推结构的必需建模步骤**——后者不能算"独立证据"。
+- Structural relaxation, electronic structure, adsorption energy and reaction barrier are **four different things** — do not merge them.
+- Classical MD ≠ DFT ≠ proof of a reaction pathway.
+- Distinguish computation as **independent verification of an experiment** from computation as **a required modeling step to extract structure from the data** — the latter is not independent evidence.

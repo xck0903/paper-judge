@@ -1,62 +1,64 @@
-# 贡献指南
+# Contributing
 
-这个技能的价值来自**判据**，不是来自条目数量。所以贡献的门槛不是"多写点"，而是"每条判据都能被检验"。
+The value of this skill comes from its **criteria**, not from the number of entries. So the bar for a contribution is not "write more" — it is "every criterion must be testable".
 
-## 欢迎的贡献
+## Welcome contributions
 
-### 1. 补充你所在领域的测量范式
+### 1. Add a measurement paradigm
 
-`references/evidence-ladder.md` 第三节按测量范式组织陷阱清单。如果你的方向（如流变、单细胞测序、风洞实验、野外观测）不在这五类里：
+Section 3 of `references/evidence-ladder.md` organises pitfalls by measurement paradigm. If your area (rheology, single-cell sequencing, wind-tunnel testing, field observation) is not among the five:
 
-1. 按现有格式新增一类，标题为 `**XX 类**（典型手段列举）`
-2. 每条陷阱写成"这个仪器的读数还可能被什么伪造"的形式
-3. 每条都要能对上一个具体动作（"有没有未照射对照""补偿了多少 iR"），不要写"注意数据质量"
+1. Add a category in the existing format, headed `**Your category** (typical techniques listed)`
+2. Write each pitfall in the form "what else could fake this instrument's reading"
+3. Each item must map to a concrete action ("was there an unirradiated control", "how much iR was compensated"), not to a reminder like "pay attention to data quality"
 
-### 2. 报告判据失效
+### 2. Report a criterion that fails
 
-最有价值的 issue 是这种：**某条判据在什么类型的论文上给出了错误结论**。
+The most valuable issue is this: **a criterion that produced a wrong verdict on a particular kind of paper**.
 
-请提供：
-- 哪一条判据（引用 `SKILL.md` 或 `references/` 里的原句）
-- 什么样的论文让它失效
-- 失效的具体表现（误判为漏洞？漏判了真漏洞？）
-- 你建议怎么改
+Please include:
+- Which criterion (quote the line from `SKILL.md` or `references/`)
+- What kind of paper broke it
+- How it broke (false positive — a flaw that wasn't there? or false negative — a real flaw missed?)
+- What you would change
 
-**不要在 issue 里贴未发表论文的原文**。用脱敏描述即可。
+**Do not paste unpublished manuscript text in an issue.** A de-identified description is enough.
 
-### 3. 补充真实案例
+### 3. Add a real case
 
-`examples/` 目前只有结构示意。欢迎提交脱敏的真实精读输出（删掉具体材料体系、数据、作者信息，只保留判断过程），说明"这一条判断是怎么做出来的"。
+`examples/` currently holds only a structural sketch. De-identified real output is welcome (strip the material system, data and author details; keep the reasoning), together with an explanation of how a particular judgment was reached.
 
-### 4. 翻译
+### 4. Translation
 
-目前以中文为主。英文、日文等其他语言版本欢迎，命名 `README.<lang>.md`。
+The instructions are maintained in English as the single source of truth. Translations of the **README** are welcome, named `README.<lang>.md`.
 
-## 不接受的改动
+We deliberately do not maintain translated copies of `SKILL.md` — two copies of a rule set drift, and a drifting rule set is two different skills.
 
-以下几类 PR 会被拒绝，不是态度问题，是方向问题：
+## Changes that will be declined
 
-| 不接受的 | 原因 |
+These are rejected on direction, not attitude:
+
+| Not accepted | Why |
 |---|---|
-| 把判据写死到某个学科 | 本技能的核心设计是学科无关。要加领域内容，请作为"测量范式"新增一类 |
-| "该领域普遍如此"作为论据 | 惯例不是证据。任何判据必须给可检验的理由 |
-| 增加"性能优异""创新性强"这类评价词 | 一律换成可核对表述：比谁高多少、排除了什么 |
-| 放宽锚点要求 | 锚点（Fig. 3c / p.5）是本技能可被核对的唯一保障 |
-| 加入特定厂商、期刊、机构的推荐 | 本技能不评价具体期刊的"好坏"，只教怎么判断 |
+| Hard-wiring criteria to one discipline | Discipline-agnosticism is the core design. Field-specific content belongs in the paradigm list as a new category |
+| "That is how it is done in this field" as an argument | Convention is not evidence. Every criterion needs a testable reason |
+| Adding evaluative words such as "excellent performance" or "highly innovative" | Replace with checkable statements: higher than whom by how much, what was excluded |
+| Relaxing the anchor requirement | Anchors (Fig. 3c / p.5) are the only thing that makes a judgment checkable |
+| Recommending specific vendors, journals or institutions | This skill does not rate journals; it teaches how to judge |
 
-## 提交前自查
+## Self-check before submitting
 
-- [ ] 新增的判据，我能说出它在什么情况下**不适用**
-- [ ] 新增的条目，能对应一个具体动作，而不是一句提醒
-- [ ] 没有引入个人隐私、未发表数据、或第三方版权内容
-- [ ] 改完在至少一篇真实论文上跑过一遍
+- [ ] For every criterion I add, I can say **when it does not apply**
+- [ ] Every entry maps to a concrete action, not a reminder
+- [ ] No personal data, unpublished data or third-party copyrighted material included
+- [ ] I ran the modified skill on at least one real paper
 
-## 开发约定
+## Development conventions
 
-- 主文件 `SKILL.md` 只放流程与硬规矩；细则放 `references/`，并在第 6 节登记"什么时候翻哪本"。
-- 主文件控制在 20KB 以内。超了说明该拆附录，而不是继续加条目。
-- 版本变更写进 `CHANGELOG.md`。
+- `SKILL.md` holds only the workflow and the hard rules. Detail lives in `references/`, registered in section 6 with "when to open which file".
+- Keep `SKILL.md` under 24 KB (the English instruction file runs longer than a Chinese one for the same rule set). Going over means something should move into an appendix, not that more entries should be added.
+- Record version changes in `CHANGELOG.md`.
 
-## 许可
+## License
 
-贡献即表示同意以 [MIT](LICENSE) 许可发布。
+Contributions are accepted under the [MIT](LICENSE) license.

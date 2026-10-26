@@ -1,136 +1,136 @@
-# 输出长什么样
+# What the output looks like
 
-> **说明**：下面是**输出骨架示意**。文中的数字、图号、期刊、作者均为占位符 `████`，不是真实论文数据。
-> 目的是让使用者一眼看出每一部分该有什么、颗粒度多细。真实输出必须每句话都能追到原文锚点。
-
----
-
-## Part 1 · 出身、团队，与这篇文章干了什么（约 30%）
-
-### 1.1 发在哪、什么风评（120–180 字）
-
-████（期刊名），影响因子 ███（【检索】，或"未核实"）【检索】。
-风评：老牌口碑刊 / 高分新刊 / 高分但门槛松 —— 依据：████（审稿严格度、领域引用习惯、发文量与 OA 收费）。
-
-> 写作要点：三选一，给依据，不评价具体期刊好坏；**不许用刊名推断本文质量**。
-
-### 1.2 领域与团队（300–400 字）
-
-这个方向现在在争 ████，卡在 ████，这篇从 ████ 口子进来。
-第一作者 ████（博士生，████ 组）。
-第一通讯 ████（████ 大学），代表作 ████、████，课题组在该方向的地位体现为 ████【检索】。
-第二通讯 ████，方向 ████。
-> 查不到就写"未核实"，不许补头衔、奖项、师承。
-
-### 1.3 这篇文章干了什么（800–900 字）
-
-**一句话结论 + 初判档位**：████，初判 **二档（基本成立，有缺口）**。
-
-**研究缺口与可检验假设**：前人知道 ████，但无法证明 ████。作者主张可改写为："若 ████ 成立，则指标 ████ 应随条件 ████ 出现 ████ 变化。"
-
-**方法与体系选择**：用 ████ 手段，因为 ████；样品选 ████，因为 ████。
-
-**科学性（只给判断）**：证据链整体闭合，薄在第 ████ 环（**证据与推理见 Part 4**）。
-
-**进步性**：【增量型 / 突破型】——相对 ████ 的已有工作，它在 ████ 上推进了 ████（可核对表述，不用"性能优异"）。
-
-**逻辑链**：
-`缺口 → 假设 → 体系 → 逐图证据 → 指标 → 机理 → 因果 → 边界`
-最脆的一环：**████**（只点名，不展开）。
-
-> **末尾必停**：要不要逐图解析？Fig. 1–█ / SI Fig. S1–S█，可以只挑几张。
+> **Note**: this is an **output skeleton**. Numbers, figure numbers, journals and authors are placeholders `████`, not real data.
+> The point is to show what each section should contain and at what granularity. Real output must trace every sentence to an anchor in the source.
 
 ---
 
-## Part 2 · 逐图解析（约 50%，每图 200–300 字）
+## Part 1 · Venue, group, and what the paper did (~30%)
+
+### 1.1 Where it was published, and what the venue is worth (~90–120 words)
+
+████ (journal), impact factor ███ 【verified】 (or "not verified").
+Reputation: established and well regarded / high-impact new journal / high impact factor with a loose threshold — basis: ████ (review strictness, citation habits in the field, volume and open-access fees).
+
+> Writing note: pick one category, show the basis, never rate the journal itself; **never infer this paper's quality from the journal name.**
+
+### 1.2 Field and group (~200–260 words)
+
+The subfield is currently arguing about ████, and is stuck at ████; this paper enters through ████.
+First author ████ (PhD student, ████ group).
+First corresponding author ████ (███ University); representative work ████, ████; the group's standing in this direction shows as ████ 【verified】.
+Second corresponding author ████, working on ████.
+> If nothing is found, write "not verified" — never add titles, awards or academic lineage.
+
+### 1.3 What the paper did (~500–600 words)
+
+**One-sentence conclusion plus provisional tier**: ████, provisionally **Tier 2 (sound with gaps)**.
+
+**Gap and testable hypothesis**: it was previously known that ████, but it could not be shown that ████. The authors' claim rewrites as: "if ████ holds, then metric ████ should change in ████ way with condition ████."
+
+**Methods and system choice**: technique ████ because ████; sample ████ because ████.
+
+**Scientific soundness (judgment only)**: the chain closes overall, thin at link ████ (**evidence and reasoning: see Part 4**).
+
+**Advance**: 【incremental / breakthrough】 — relative to prior work ████, it moves ████ forward by ████ (checkable statement, not "excellent performance").
+
+**Logic chain**:
+`gap → hypothesis → system → per-figure evidence → metric → mechanism → causation → boundary`
+Weakest link: **████** (named only, not expanded).
+
+> **Mandatory stop at the end**: figure-by-figure analysis? Fig. 1–█ / SI Fig. S1–S█ — a subset is fine.
+
+---
+
+## Part 2 · Figure by figure (~50%, ~120–180 words each)
 
 ```
-Fig. 3（图题 ████）
-- 手段与条件：████，模式 ████，气氛/温度/剂量 ████
-- panel 拆解：a 原始观测 / b 处理后数据 / c 统计汇总 / d 模拟输出 / e 示意图
-- 数据与误差：███±███（n=██，误差棒为 SD/SEM/CI）；趋势 ████
-- 作者声称它证明了 ████
-- 证据阶梯：站在第 ██ 级；跨级跳：从第 4 级（统计）直接说到第 5 级（机理）
-- 我的判断：中 —— 理由：████
-- 问题在哪：Fig. 3c（p.5）过度解读；建议补 ████
+Fig. 3 (caption ████)
+- Technique and conditions: ████, mode ████, atmosphere/temperature/dose ████
+- Panel breakdown: a raw observation / b processed data / c statistical summary / d simulation output / e schematic
+- Data and error: ███±███ (n=██, error bars SD/SEM/CI); trend ████
+- What the authors claim it proves: ████
+- Evidence ladder: level ██; leap: from level 4 (statistics) straight to level 5 (mechanism)
+- My judgment: moderate — reason: ████
+- Where the problem is: Fig. 3c (p.5) is over-interpreted; suggests adding ████
 ```
 
-**图间独立性**（逐图写完后必补）：Fig. 2–4 共用同一批样品与同一批原始数据，属链式递进，**不构成交叉验证**；Fig. 5 与 Fig. 3 测的是同一个物理量但手段不同，这一对才是真互证。
+**Independence between figures** (mandatory after all figures): Fig. 2–4 share the same samples and the same raw data — a chain, **not cross-validation**; Fig. 5 and Fig. 3 measure the same physical quantity with different techniques, and only that pair is genuine corroboration.
 
 ---
 
-## Part 3 · 技术手段盘点（约 8%）
+## Part 3 · Survey of techniques (~8%)
 
-| 手段 | 用来解决什么 | 常规/创新 | 你熟不熟 | 强在哪（可核对） |
+| Technique | What it solves | Routine / novel | User familiar? | Strength (checkable) |
 |---|---|---|---|---|
-| ████ | ████ | 常规 | 熟 | — |
-| ████ | ████ | 组合创新 | 不熟【推断】 | 把 ████ 的时间分辨率从 ███ 提到 ███；代价是 ████ |
+| ████ | ████ | routine | yes | — |
+| ████ | ████ | combinatorial novelty | no 【inferred】 | pushes time resolution from ███ to ███; costs ████ |
 
-最硬的功夫：████（说明它比常规做法多解决了什么、排除了什么）。
-
----
-
-## Part 4 · 漏洞与逻辑可疑点（约 8%）
-
-总账：致命 █ 条、存疑 █ 条、吹毛求疵 █ 条。
-
-**漏洞 1｜Fig. 3c（p.5）｜致命**
-问题：从 ████ 直接推出 ████。
-为什么是问题：证据阶梯从第 4 级跳到第 6 级，中间缺 ████。
-怎么补：补 ████ 对照 / 换 ████ 条件。
-
-**竞争解释（必须自己造）**
-- 解释 A：████（预测 ████）
-- 解释 B：████（预测 ████）
-- 区分实验：████ —— 若测得 ████ 则支持 A
-
-**条级四层归属**
-- 已充分支持：████
-- 有支持但需限定：████（限定条件 ████）
-- 合理假说：████
-- 证据不足：████
-
-**档位更新**：因漏洞 1，从 **二档 → 三档**。
+Hardest craft: ████ (state what it solves beyond the routine approach and what it excludes).
 
 ---
 
-## 偏重专项（选了偏重才有，≤400 字）
+## Part 4 · Holes and suspect logic (~8%)
 
-按偏重出其中一节：
+Tally: █ fatal, █ doubtful, █ nitpicks.
 
-- **可迁移的方法**：哪一步是通用的 ████；换体系要改 ████；哪一步是他有我没有的 ████
-- **它的推理招式**：可复用的套路 ████；我不同意的跳跃 ████
-- **可借用的写法**：Figure 顺序逻辑 ████；claim 措辞强度 ████；短板处理 ████；摘要开场 ████
-- **最该补的对照实验**：按性价比排序 ████
+**Hole 1 | Fig. 3c (p.5) | fatal**
+Problem: ████ is inferred directly from ████.
+Why it is a problem: the ladder jumps from level 4 to level 6; what is missing in between is ████.
+How to fix: add the ████ control / run under ████ conditions.
+
+**Competing explanations (must be constructed yourself)**
+- Explanation A: ████ (predicts ████)
+- Explanation B: ████ (predicts ████)
+- Discriminating experiment: ████ — measuring ████ would support A
+
+**Claim-level verdicts**
+- Well supported: ████
+- Supported with caveats: ████ (caveat: ████)
+- Plausible hypothesis: ████
+- Insufficient: ████
+
+**Tier update**: because of hole 1, **Tier 2 → Tier 3**.
 
 ---
 
-## 讨论 → 打分 → 落盘
+## Emphasis add-on (only with an emphasis, under ~250 words)
 
-讨论一两轮后，给 6 维打分（每项 1–5，满分 30）：
+Produce exactly one of these:
 
-| 维度 | 我方初评 | 理由 |
+- **Transferable methods**: which step is general ████; what must change in another system ████; which step needs equipment the user lacks ████
+- **Its reasoning moves**: reusable pattern ████; the leap I reject ████
+- **Borrowable writing**: figure order logic ████; claim wording strength ████; weakness handling ████; how the abstract opens ████
+- **The control experiments most worth adding**: ranked by cost-effectiveness ████
+
+---
+
+## Discussion → scoring → saving
+
+After one or two rounds of discussion, give the six scores (1–5 each, 30 total):
+
+| Dimension | Provisional | Reason |
 |---|---|---|
-| 结论清晰度 | █/5 | ████ |
-| 证据完整度 | █/5 | ████ |
-| 表征可靠性 | █/5 | ████ |
-| 数据分析严谨性 | █/5 | ████ |
-| 逻辑链闭合度 | █/5 | ████ |
-| 推进价值 | █/5 | ████ |
+| Clarity of conclusion | █/5 | ████ |
+| Evidence completeness | █/5 | ████ |
+| Characterization reliability | █/5 | ████ |
+| Analytical rigor | █/5 | ████ |
+| Chain closure | █/5 | ████ |
+| Advance | █/5 | ████ |
 
-打分后落盘（默认 `~/paper-notes/`），文件以 12 问速记模板开头：
+Then save (default `~/paper-notes/`), with the 12-question summary at the top:
 
 ```
-01｜科学问题：████
-02｜旧认知与缺口：████
-03｜可检验假设：若 ████ 则 ████
-04｜创新归属：████（"首次"属于：首次展示/首次定量/首次直接证明）
-05｜逐图证据：Fig.__ 测得 ████；第 __ 级
-06｜隐含假设：████
-07｜样本与统计：独立 n=__（颗粒/批次/原子级）
-08｜因果缺口：从 ████ 到 ████ 还缺 ████
-09｜竞争解释：A ████ / B ████ / 区分实验 ████
-10｜结论分层：████
-11｜可借鉴：████
-12｜最终判断：__ 档
+01 | Scientific question: ████
+02 | Prior knowledge and gap: ████
+03 | Testable hypothesis: if ████ then ████
+04 | Attribution of novelty: ████ (first demonstration / first quantification / first direct proof)
+05 | Per-figure evidence: Fig.__ measured ████; level __
+06 | Implicit assumptions: ████
+07 | Sample and statistics: independent n=__ (particle/batch/atom level)
+08 | Causal gap: between ████ and ████ what is missing is ████
+09 | Competing explanations: A ████ / B ████ / discriminating experiment ████
+10 | Claim-level verdicts: ████
+11 | Worth borrowing: ████
+12 | Final judgment: tier __
 ```

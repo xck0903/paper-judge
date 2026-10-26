@@ -1,37 +1,50 @@
 # Changelog
 
-本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
+This project follows [Semantic Versioning](https://semver.org/).
+
+## [1.2.0] - 2026-10-26
+
+### Changed
+
+- **Language architecture split in two.** Instruction files (`SKILL.md`, `references/`) are now English and are the single source of truth. Introduction files are bilingual: `README.md` (English) and `README.zh-CN.md` (Chinese). A Chinese design note, `docs/DESIGN.zh-CN.md`, explains why each criterion exists.
+- **Output language is now adaptive** (section 8). The skill writes in whatever language the user writes in, keeping technical terms in their original form. Previously the output was hard-coded to Chinese, which made the skill unusable by non-Chinese readers.
+- `references/` rewritten in English with the same criteria, no rule removed. Length budgets are given in both words and characters so the proportions hold in either language.
+- `examples/output-structure.md` translated to English; placeholders unchanged.
+
+### Why not two translated copies of `SKILL.md`
+
+Because they drift. Two copies of a rule set that are edited independently become two skills with different behaviour, and whichever copy an agent loads determines what it does. One source, one behaviour; translation belongs at the README level, where a stale translation costs a reader some confusion instead of corrupting a judgment.
 
 ## [1.1.0] - 2026-10-26
 
-### 变更
+### Changed
 
-- **更名：`paper-review` → `paper-judge`**。原名字只描述了动作（读一遍），新名字点明核心产出（读完必须给出裁决）：阅读是手段，判决是产出。
-- **description 重写**：明确输出顺序为"先讲清文章干了什么，再给裁决"，避免被当成纯挑刺工具；补充「这篇靠不靠谱」「能不能引」等真实意图触发词。
-- **不再保留旧名别名**。升级时请把技能目录整体替换为 `paper-judge/`，旧目录删除即可，无需迁移任何数据。
+- **Renamed `paper-review` → `paper-judge`.** The old name described the action (read it once); the new name names the product (a reading must end in a verdict). Reading is the means, the verdict is the output.
+- **Description rewritten** to fix the output order — explain what the paper did, then judge — so the skill is not mistaken for a fault-finding tool. Added real intents such as "is this reliable" and "can I cite this" as triggers.
+- **No alias kept for the old name.** Replace the skill directory with `paper-judge/` and delete the old one; there is no data to migrate.
 
 ## [1.0.0] - 2026-10-26
 
-首次公开发布。
+First public release.
 
-### 核心机制
+### Core mechanics
 
-- **四部分分轮输出**：Part 1 出身与内容（约 30%）→ 停口问逐图解 → Part 2 逐图解析（约 50%）→ Part 3 技术手段盘点 → Part 4 漏洞与可疑点。
-- **三层刻度**：单条结论四层、单张图强/中/弱 + 证据阶梯定位、整篇四档可靠性。篇级档位由最关键的短板决定。
-- **六级证据阶梯**：直接信号 → 预处理 → 定量重构 → 统计关联 → 机理 → 因果。
-- **三类证据分类**：直接观测 / 间接推断 / 机制解释，与"原文声称 / 我的推断 / 待验证"的来源标注并行使用。
-- **按测量范式组织的陷阱清单**：成像 / 谱学衍射 / 电化学性能 / 力学热学器件 / 计算模拟。不按学科绑定。
-- **强制竞争解释构造**：每条核心结论必须自造两种竞争解释并设计区分实验，而非仅检查作者是否排除。
-- **SI 三类精读**：支撑主文结论的、与使用者方向相关的、以及专找打脸的三处（失败实验、无信号的谱学、作者自认的限制）。
-- **锚点强制**：每条判断须带图号 + 小图 + 页码，无锚点不许写。
+- **Four parts, delivered in stages**: Part 1 venue and content (~30%) → stop and ask about figure-by-figure → Part 2 figure-by-figure (~50%) → Part 3 survey of techniques → Part 4 holes and suspect logic.
+- **Three scales**: four levels per claim, strong/moderate/weak plus ladder rung per figure, four tiers per paper. The paper tier is set by its weakest critical claim.
+- **Six-level evidence ladder**: direct signal → preprocessing → quantification and reconstruction → statistical association → mechanism → causation.
+- **Three evidence types**: direct observation / indirect inference / mechanistic interpretation, used alongside the three-layer source label (as claimed / my inference / to be verified).
+- **Pitfall checklists organised by measurement paradigm**: imaging / spectroscopy and diffraction / electrochemistry and performance / mechanics, thermal and devices / computation. Not bound to any discipline.
+- **Mandatory competing-explanation construction**: two alternatives per core claim, plus the experiment that would discriminate them — not merely checking whether the authors excluded them.
+- **Three kinds of SI close-reading**: what supports a core claim, what matches the user's direction, and what contradicts the paper (failed experiments, missing signals, admitted limitations).
+- **Anchors are mandatory**: every judgment carries figure, panel and page. No anchor, no claim.
 
-### 流程
+### Workflow
 
-- 开读前定偏重（默认精读全文 / 学实验方法 / 学数据分析与逻辑推理 / 学写作与组图 / 引用 / 质疑），偏重只加权不跳步。
-- 四部分出完后先多轮讨论，再提醒做 6 维 × 5 分打分，最后落盘 md。
-- 落盘文件以 12 问速记模板开头，接四部分全文、最终档位、打分表。
+- Pick an emphasis before reading (default close read / experimental method / data analysis and reasoning / writing and figures / citing / challenging); emphasis weights the output, it never skips a part.
+- After the four parts: multi-round discussion, then a 6-dimension × 5-point score, then save.
+- The saved note opens with the 12-question summary, followed by the full four parts, the final tier and the score table.
 
-### 工程
+### Engineering
 
-- 拆分为 `SKILL.md` + `references/` 三份附录，按需加载，避免主文件随迭代膨胀。
-- 配置项（领域背景 / 笔记目录 / 默认偏重）与判据解耦，本文件保持通用可分享。
+- Split into `SKILL.md` plus three `references/` appendices, loaded on demand so the main file does not grow with every iteration.
+- Configuration (field background / notes directory / default emphasis) is decoupled from the criteria, keeping the file generic and shareable.

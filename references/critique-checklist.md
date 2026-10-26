@@ -1,74 +1,74 @@
-# 批判性检查清单（主动提问用）
+# Critical Reading Checklist (for active questioning)
 
-配合 `evidence-ladder.md` 使用：那份给判据，这份给**要问的问题**。按 A→D 顺序过，别跳。
+Use together with `evidence-ladder.md`: that file supplies the criteria, this one supplies **the questions to ask**. Work through A to D in order; do not skip.
 
-## A · 样本、代表性与对照
+## A · Samples, representativeness, controls
 
-1. 到底测了多少个**独立**颗粒 / 样品 / 器件 / 批次？多少张图其实是同一个样品的不同加工结果？
-2. 样品怎么挑的？尺寸、形貌、取向（晶带轴、晶粒取向、器件朝向）、"能不能追踪"是不是筛选条件？**有没有只报好看的**？
-3. 单颗粒层面的结构与整体性能，是不是来自**同一批统计对象**？拿 A 颗粒的结构解释 B 批次的活性，就是错位。
-4. 对照齐不齐：空白、正负对照、处理前后、循环前后、**未照射/未处理样本**。
-5. 有没有"负结果"被隐去？
+1. How many **independent** particles / samples / devices / batches were actually measured? How many figures are really different processing of the same specimen?
+2. How were samples selected? Are size, morphology, orientation (zone axis, grain orientation, device orientation) or "trackability" selection criteria? **Were only the good-looking ones reported?**
+3. Do the single-object structure and the ensemble performance come from **the same statistical population**? Explaining batch B's activity with particle A's structure is a mismatch.
+4. Are controls complete: blank, positive and negative controls, before/after treatment, before/after cycling, **unirradiated or untreated specimens**?
+5. Were any negative results dropped?
 
-## B · 指标定义、数值与统计
+## B · Metric definition, numbers, statistics
 
-1. 这个指标是怎么定义的？分母是谁？
-2. 报的是百分点还是百分比？换算错了没有？
-3. n 是颗粒级、批次级还是原子级？**同一颗粒内的原子不是独立实验。**
-4. 误差棒是 SD、SEM 还是 CI？几个重复算出来的？
-5. 用了什么检验？单侧还是双侧？p 值之外有没有效应量？
-6. 说"可逆/稳定"时，指的是哪一种（见 evidence-ladder 第五节）？
+1. How is the metric defined? What is the denominator?
+2. Is it reporting percentage points or percent? Was the conversion done correctly?
+3. Is n particle-level, batch-level or atom-level? **Atoms inside one particle are not independent experiments.**
+4. Are error bars SD, SEM or CI? Computed from how many repeats?
+5. Which test was used? One-sided or two-sided? Is there an effect size beyond the p-value?
+6. When "reversible" or "stable" is claimed, which meaning is intended (see `evidence-ladder.md` section 5)?
 
-## C · 测量伪影与模型敏感性
+## C · Measurement artefacts and model sensitivity
 
-1. 逐条过一遍 `evidence-ladder.md` 第三节的伪影清单，一条条问"这篇处理了吗"。
-2. 模型换了先验还成立吗？参数敏感吗？作者给了敏感性分析吗？
-3. 有没有多个过程能产生同一个最终结果？作者讨论了吗？
+1. Walk through the artefact list in `evidence-ladder.md` section 3, item by item, asking "did this paper handle it".
+2. Does the model survive a change of prior? Is it parameter-sensitive? Did the authors provide a sensitivity analysis?
+3. Could several processes produce the same final result? Did the authors discuss this?
 
-## D · 排除替代解释（**这一节必须主动构造，不许只做被动检查**）
+## D · Excluding alternative explanations (**construct actively, not just check passively**)
 
-对**每条核心结论**，自己造出至少**两种**竞争解释，然后写清"什么实验能让它们给出不同预测"。
+For **every core claim**, invent at least **two** competing explanations yourself, then state what experiment would make them predict differently.
 
-竞争解释的常见来源：结构差异 / 化学价态 / 覆盖度 / 烧结与团聚 / 应变 / 界面效应 / 传质限制 / 辐照与热效应 / 测量条件差异 / 统计假象。
+Usual sources of competing explanations: structural difference / chemical state / coverage / sintering and agglomeration / strain / interfacial effects / mass-transport limitation / irradiation and heating / differences in measurement conditions / statistical artefact.
 
-判据：**优先找能区分机制的干预实验，而不是更多同类漂亮图。** 作者若只补了"更多同一手段的数据"，等于没排除。
+Criterion: **look for an intervention that discriminates between mechanisms, not for more good-looking figures of the same kind.** If the authors only added more data from the same technique, nothing was excluded.
 
-## E · 创新归属（不许含糊）
+## E · Attribution of novelty (no vagueness allowed)
 
-把三种"首次"严格分开，作者常混着说：
+Separate the three kinds of "first", which authors routinely blur:
 
-| 说法 | 真正含义 |
+| Claim | What it actually means |
 |---|---|
-| 首次展示 | 第一次把这个现象/体系做出来 |
-| 首次定量 | 现象早有人见，第一次给出可靠数字 |
-| 首次直接证明 | 前人只有间接推断，第一次拿到直接证据 |
+| First demonstration | The first time this phenomenon or system was produced at all |
+| First quantification | The phenomenon was seen before; this is the first reliable number for it |
+| First direct proof | Predecessors had only indirect inference; this is the first direct evidence |
 
-另外必查：**用成熟工具做新组合 ≠ 发明新仪器/新算法**；"首次在该体系应用某表征"通常只是组合创新。
+Also mandatory: **a new combination of mature tools is not a new instrument or algorithm**; "first application of technique X to system Y" is usually combinatorial novelty only.
 
-## F · 图与图之间的独立性
+## F · Independence between figures
 
-- 这一组图是不是共用**同一批数据**、同一个**假设**、同一个**样品**？
-- 后一张图是否用了前一张图的结论作为前提？如果是，它们**不是**交叉验证，只是链式递进。
-- 号称"多手段互证"的几张图，测的是不是同一个物理量？同一个量用两种仪器测才叫互证。
+- Do this set of figures share **the same dataset**, the same **assumption**, the same **sample**?
+- Does a later figure use an earlier figure's conclusion as a premise? If so they are **not** cross-validation, only a chain.
+- Where "multiple techniques corroborate" is claimed, are they measuring the same physical quantity? Only the same quantity measured by two instruments counts as corroboration.
 
-## G · panel 分类（防示意图冒充证据）
+## G · Panel classification (to stop schematics posing as evidence)
 
-每个 panel 先归类，再判断它能不能支撑作者的话：
+Classify every panel first, then judge whether it can carry the authors' sentence:
 
-| 类型 | 能不能当证据 |
+| Type | Can it be evidence? |
 |---|---|
-| 原始观测（显微图、谱图、曲线） | 能，但要查条件与伪影 |
-| 处理后数据（滤波、拟合、重构） | 能，但要查处理是否引入结构 |
-| 统计汇总（柱状图、分布图、误差） | 只能支持"趋势"，不能支持"机理" |
-| 模拟输出（DFT、MD、有限元） | 只能支持"可能"，不能替代观测 |
-| 示意图 / 机理图 | **不能当证据**，只是作者的叙述 |
+| Raw observation (micrograph, spectrum, curve) | Yes, but check conditions and artefacts |
+| Processed data (filtered, fitted, reconstructed) | Yes, but check whether processing introduced structure |
+| Statistical summary (bar chart, distribution, error) | Can support a "trend", never a "mechanism" |
+| Simulation output (DFT, MD, FEM) | Can support "possible", cannot replace observation |
+| Schematic / mechanism drawing | **Not evidence** — only the authors' narration |
 
-若关键结论只有示意图和模拟撑着，**没有任何原始观测**，这一环直接判为最脆。
+If a key claim rests only on schematics and simulation with **no raw observation at all**, that link is the weakest by definition.
 
-## H · SI 里专找打脸的三处
+## H · Hunting contradictions in the SI
 
-1. **失败或未成功的实验**（换了条件就不行、重复不出来的那部分）
-2. **没出信号的谱学**（本该有峰却没有，作者一句"可能是……"带过）
-3. **作者自己承认的限制**（"本文未考虑……""受限于……"）
+1. **Failed or unsuccessful experiments** — the part that breaks when conditions change, or that could not be reproduced
+2. **Spectra with no signal** — a peak that should be there and is not, waved away with "possibly …"
+3. **Limitations the authors admit** — "this work does not consider …", "limited by …"
 
-这三处往往比主文任何一张图都值钱。**主文结论和 SI 对不上的地方，优先级最高。**
+These three are often worth more than any figure in the main text. **Where the main text and the SI disagree, priority is highest.**
